@@ -112,6 +112,7 @@ const departments = [
     color: "blue",
     link: LINKS.kepolisian,
     image: "/bannerpolisi.png",
+    logo: "/logoJKC/LOGO_KEPOLISIAN.png",
   },
   {
     id: "jcfd",
@@ -122,6 +123,7 @@ const departments = [
     color: "red",
     link: LINKS.pemadamkebakaran,
     image: "/bannerpemadam.png",
+    logo: "/logoJKC/LOGO_PEMADAM.png",
   },
   {
     id: "jcdot",
@@ -132,6 +134,7 @@ const departments = [
     color: "amber",
     link: LINKS.DOT,
     image: "/bannerdot.png",
+    logo: "/logoJKC/LOGO_DOT.png",
   },
   {
     id: "jckj",
@@ -142,7 +145,7 @@ const departments = [
     color: "emerald",
     link: LINKS.kejaksaan,
     comingSoon: true,
-    image: null,
+    logo: "/logoJKC/LOGO_KEJAGUNG.png",
   },
   {
     id: "jcbak",
@@ -153,7 +156,7 @@ const departments = [
     color: "rose",
     link: LINKS.bak,
     comingSoon: true,
-    image: null,
+    logo: "/logoJKC/LOGO_BAK.png",
   },
   {
     id: "jcst",
@@ -163,7 +166,7 @@ const departments = [
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
     link: LINKS.staff,
-    image: null,
+    logo: "/logoJKC/LOGO_STAFF.png",
   },
 ];
 
@@ -311,7 +314,7 @@ const DepartmentCard = ({ dept }) => {
     <div
       className={`group relative overflow-hidden rounded-2xl border ${colorStyles} bg-slate-900/30 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col`}
     >
-      {/* Banner Image */}
+      {/* Banner */}
       {dept.image ? (
         <div className="relative w-full h-40 overflow-hidden bg-black/40 border-b border-white/5">
           <img
@@ -332,20 +335,48 @@ const DepartmentCard = ({ dept }) => {
 
       {/* Content */}
       <div className="p-6 flex-1 flex flex-col">
-        <div className="flex items-center gap-4 mb-3">
-          <div
-            className={`p-3 rounded-lg bg-black/40 border border-white/5 transition-transform duration-500 group-hover:rotate-6`}
-          >
-            <dept.icon size={28} />
+        {/* Header dengan Logo dan Info */}
+        <div className="flex items-start gap-4 mb-4">
+          {/* Logo */}
+
+          <div className="w-20 h-20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+            {dept.logo ? (
+              <img
+                src={dept.logo}
+                alt={dept.abbr}
+                className="w-full h-full object-contain" // Padding p-2 dihapus agar logo bisa lebih besar
+                onError={(e) => {
+                  e.target.style.display = "none";
+                  if (e.target.nextSibling)
+                    e.target.nextSibling.style.display = "flex";
+                }}
+              />
+            ) : (
+              <div
+                style={{ display: "none" }}
+                className="w-full h-full items-center justify-center"
+              >
+                <dept.icon size={32} className="opacity-40" />
+              </div>
+            )}
+            {!dept.logo && <dept.icon size={32} className="opacity-40" />}
           </div>
-          <div>
-            <h4 className="text-2xl font-black tracking-tighter">{dept.abbr}</h4>
-            <p className="text-[10px] uppercase tracking-widest opacity-70">
-              Official Dept.
+
+          {/* Info */}
+          <div className="flex-1">
+            <h4 className="text-xl font-black tracking-tighter text-white">
+              {dept.abbr}
+            </h4>
+            <p className="text-[10px] uppercase tracking-widest opacity-70 mt-0.5">
+              Official Department
+            </p>
+            <p className="text-xs text-slate-400 mt-2 leading-tight">
+              {dept.name}
             </p>
           </div>
         </div>
-        <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
+
+        {/* Deskripsi */}
         <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">
           {dept.desc}
         </p>
