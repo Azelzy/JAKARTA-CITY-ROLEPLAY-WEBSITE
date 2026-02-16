@@ -79,6 +79,7 @@ const TiktokIcon = ({ size = 24, className = "" }) => (
 const LINKS = {
   discord: "https://discord.gg/USP9pP9Etp",
   discordcitra: "https://discord.gg/9ur5VdMTMT",
+  discordQNA: "https://discord.gg/tNfET9gDkF",
   donation: "https://saweria.co/jakartacity",
   vote: "https://melonly.xyz/servers/jakarta-city-roleplay",
   rating: "https://servers.melonly.xyz/jakarta-city-roleplay",
@@ -90,6 +91,10 @@ const LINKS = {
   pajak: "https://pajakjakartacityroleplay.netlify.app/",
   bak: "https://bakjakartacityroleplay.netlify.app/",
   kejaksaan: "#",
+  kepolisian: "https://discord.gg/WFze64KXQd",
+  pemadamkebakaran: "https://discord.gg/WFze64KXQd",
+  DOT: "https://discord.gg/WFze64KXQd",
+  staff: "https://discord.gg/hHR2h7Q2qf"
 };
 
 // --- DATA DEPARTEMEN ---
@@ -101,6 +106,7 @@ const departments = [
     icon: Siren,
     desc: "Menegakkan hukum, melindungi warga, dan menjaga ketertiban kota dari tindak kriminal.",
     color: "blue",
+    link: LINKS.kepolisian,  // ← TAMBAHAN BARU
   },
   {
     id: "jcfd",
@@ -109,6 +115,7 @@ const departments = [
     icon: Flame,
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
+    link: LINKS.pemadamkebakaran,  // ← TAMBAHAN BARU
   },
   {
     id: "jcdot",
@@ -117,6 +124,7 @@ const departments = [
     icon: Truck,
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
+    link: LINKS.DOT,  // ← TAMBAHAN BARU
   },
   {
     id: "jckj",
@@ -125,6 +133,8 @@ const departments = [
     icon: Gavel,
     desc: "Lembaga penuntut umum yang memastikan keadilan hukum ditegakkan di pengadilan.",
     color: "emerald",
+    link: LINKS.kejaksaan,  // ← TAMBAHAN BARU
+    comingSoon: true,  // ← TAMBAHAN BARU
   },
   {
     id: "jcbak",
@@ -133,6 +143,8 @@ const departments = [
     icon: Search,
     desc: "Lembaga independen pemberantas tindak pidana korupsi di lingkungan pemerintahan.",
     color: "rose",
+    link: LINKS.bakdc, 
+    comingSoon: true, // ← TAMBAHAN BARU
   },
   {
     id: "jcst",
@@ -141,9 +153,9 @@ const departments = [
     icon: Crown,
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
+    link: LINKS.staff,  // ← TAMBAHAN BARU
   },
 ];
-
 // --- HELPER COMPONENT: REVEAL ON SCROLL ---
 const RevealOnScroll = ({ children, className = "", delay = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -261,6 +273,8 @@ const FeatureCard = ({ title, desc, icon: Icon, color, link, comingSoon }) => {
   );
 };
 
+// --- KOMPONEN CARD DEPARTEMEN ---
+// --- KOMPONEN CARD DEPARTEMEN ---
 const DepartmentCard = ({ dept }) => {
   const colorStyles = {
     blue: "border-blue-400/30 bg-blue-500/5 text-blue-300 group-hover:bg-blue-500/10",
@@ -272,6 +286,16 @@ const DepartmentCard = ({ dept }) => {
     purple:
       "border-purple-400/30 bg-purple-500/5 text-purple-300 group-hover:bg-purple-500/10",
     rose: "border-rose-400/30 bg-rose-500/5 text-rose-300 group-hover:bg-rose-500/10",
+  }[dept.color];
+
+  // Styling untuk button berbentuk solid
+  const buttonColorStyles = {
+    blue: "bg-blue-600 hover:bg-blue-700 text-white border-blue-500",
+    red: "bg-red-600 hover:bg-red-700 text-white border-red-500",
+    amber: "bg-amber-600 hover:bg-amber-700 text-white border-amber-500",
+    emerald: "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500",
+    purple: "bg-purple-600 hover:bg-purple-700 text-white border-purple-500",
+    rose: "bg-rose-600 hover:bg-rose-700 text-white border-rose-500",
   }[dept.color];
 
   return (
@@ -292,7 +316,27 @@ const DepartmentCard = ({ dept }) => {
         </div>
       </div>
       <h4 className="text-white font-bold mb-2 text-lg">{dept.name}</h4>
-      <p className="text-slate-300 text-sm leading-relaxed">{dept.desc}</p>
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">{dept.desc}</p>
+      
+      {/* Button Style */}
+      {dept.comingSoon ? (
+        <button 
+          disabled
+          className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-400 cursor-not-allowed bg-slate-800 px-4 py-3 rounded-lg border border-slate-600 transition-all"
+        >
+          Segera Hadir <Lock size={16} className="ml-2" />
+        </button>
+      ) : (
+        <a
+          href={dept.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
+        >
+          Bergabung bersama Kami
+          <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
+        </a>
+      )}
     </article>
   );
 };
@@ -843,7 +887,7 @@ export default function JKCLandingPage() {
                     <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
                       <span className="text-slate-300">Base Game</span>
                       <span className="text-white font-semibold font-mono tracking-wide">
-                        ER: LIBERTY COUNTY
+                        Emergency Response: Liberty County
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-sm pb-2">
@@ -1141,7 +1185,7 @@ export default function JKCLandingPage() {
                   <Button
                     variant="outline"
                     icon={DiscordIcon}
-                    onClick={() => openLink(LINKS.discord)}
+                    onClick={() => openLink(LINKS.discordQNA)}
                   >
                     Tanya di Discord
                   </Button>
