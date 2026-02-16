@@ -1,5 +1,6 @@
 /* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
+import './LandingPage.css';
 import React, { useState, useEffect, useRef } from "react";
 import {
   Shield,
@@ -1441,91 +1442,7 @@ export default function JKCLandingPage() {
         </div>
       </footer>
 
-      {/* GLOBAL CSS ANIMATIONS + CUSTOM SCROLLBAR */}
-      <style>{`
-        /* Custom Scrollbar dengan tema JKC:RP */
-        ::-webkit-scrollbar {
-          width: 12px;
-          height: 12px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #0a0505;
-          border-left: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
-          border-radius: 6px;
-          border: 2px solid #0a0505;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
-        }
-        ::-webkit-scrollbar-corner {
-          background: #0a0505;
-        }
-        
-        /* Firefox Scrollbar */
-        * {
-          scrollbar-width: thin;
-          scrollbar-color: #dc2626 #0a0505;
-        }
-        
-        /* Hapus horizontal scrollbar */
-        html, body {
-          overflow-x: hidden;
-          max-width: 100vw;
-        }
-        
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translate3d(0, 40px, 0); }
-          to { opacity: 1; transform: translate3d(0, 0, 0); }
-        }
-        @keyframes fadeInDown {
-          from { opacity: 0; transform: translate3d(0, -40px, 0); }
-          to { opacity: 1; transform: translate3d(0, 0, 0); }
-        }
-        @keyframes kenBurns {
-          0% { transform: scale(1); }
-          100% { transform: scale(1.1); }
-        }
-        @keyframes gridMove {
-          0% { background-position: 0 0; }
-          100% { background-position: 50px 50px; }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes gradientFlow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
-        }
-        
-        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
-        .animate-fade-in-down { animation: fadeInDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
-        .animate-ken-burns { animation: kenBurns 20s ease-out infinite alternate; }
-        .animate-grid-move { animation: gridMove 8s linear infinite; }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-gradient-flow { background-size: 200% 200%; animation: gradientFlow 10s ease infinite; }
-        .animate-blob { animation: blob 10s infinite; }
-        
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
-        .delay-500 { animation-delay: 500ms; }
-        .delay-600 { animation-delay: 600ms; }
-      `}</style>
+      {/* ...existing code... */}
     </div>
   );
 }
