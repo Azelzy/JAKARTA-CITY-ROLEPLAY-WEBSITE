@@ -349,11 +349,6 @@ export default function JKCLandingPage() {
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-[#0a0505] to-black z-0" />
            <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0">
-             <img 
-              src="https://images.unsplash.com/photo-1555899434-94d1368b7bdb?q=80&w=2070&auto=format&fit=crop" 
-              alt="Monas Jakarta Background" 
-              className="w-full h-full object-cover animate-ken-burns filter contrast-125 brightness-75 grayscale-[30%]"
-            />
            </div>
            <div className="absolute inset-0 opacity-20 z-10 animate-grid-move" 
                 style={{ 
