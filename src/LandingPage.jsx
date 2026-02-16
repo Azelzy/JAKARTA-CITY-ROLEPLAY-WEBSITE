@@ -1,26 +1,32 @@
 /* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
-import './LandingPage.css';
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import {
   Shield,
+  Globe,
   TrendingUp,
   Gavel,
+  Users,
   Server,
+  ChevronRight,
   Play,
   Monitor,
   Activity,
   Newspaper,
   Landmark,
   ArrowRight,
+  CheckCircle,
   ExternalLink,
   Menu,
   X,
   AlertTriangle,
   BookOpen,
+  AlertCircle,
   ThumbsUp,
   Star,
   Heart,
+  Coffee,
   Lock,
   Youtube,
   Calendar,
@@ -48,7 +54,6 @@ const DiscordIcon = ({ size = 24, className = "" }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
-    aria-label="Discord"
   >
     <path d="M9 12h.01" />
     <path d="M15 12h.01" />
@@ -69,7 +74,6 @@ const TiktokIcon = ({ size = 24, className = "" }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
-    aria-label="TikTok"
   >
     <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
   </svg>
@@ -106,7 +110,7 @@ const departments = [
     icon: Siren,
     desc: "Menegakkan hukum, melindungi warga, dan menjaga ketertiban kota dari tindak kriminal.",
     color: "blue",
-    link: LINKS.kepolisian,  // ← TAMBAHAN BARU
+    link: LINKS.kepolisian,
   },
   {
     id: "jcfd",
@@ -115,7 +119,7 @@ const departments = [
     icon: Flame,
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
-    link: LINKS.pemadamkebakaran,  // ← TAMBAHAN BARU
+    link: LINKS.pemadamkebakaran, 
   },
   {
     id: "jcdot",
@@ -124,7 +128,7 @@ const departments = [
     icon: Truck,
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
-    link: LINKS.DOT,  // ← TAMBAHAN BARU
+    link: LINKS.DOT, 
   },
   {
     id: "jckj",
@@ -133,8 +137,8 @@ const departments = [
     icon: Gavel,
     desc: "Lembaga penuntut umum yang memastikan keadilan hukum ditegakkan di pengadilan.",
     color: "emerald",
-    link: LINKS.kejaksaan,  // ← TAMBAHAN BARU
-    comingSoon: true,  // ← TAMBAHAN BARU
+    link: LINKS.kejaksaan,
+    comingSoon: true,
   },
   {
     id: "jcbak",
@@ -143,8 +147,8 @@ const departments = [
     icon: Search,
     desc: "Lembaga independen pemberantas tindak pidana korupsi di lingkungan pemerintahan.",
     color: "rose",
-    link: LINKS.bakdc, 
-    comingSoon: true, // ← TAMBAHAN BARU
+    link: LINKS.bak,
+    comingSoon: true,
   },
   {
     id: "jcst",
@@ -153,9 +157,10 @@ const departments = [
     icon: Crown,
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
-    link: LINKS.staff,  // ← TAMBAHAN BARU
+    link: LINKS.staff,
   },
 ];
+
 // --- HELPER COMPONENT: REVEAL ON SCROLL ---
 const RevealOnScroll = ({ children, className = "", delay = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -171,12 +176,11 @@ const RevealOnScroll = ({ children, className = "", delay = 0 }) => {
       },
       { threshold: 0.1 },
     );
-    const currentRef = ref.current;
-    if (currentRef) observer.observe(currentRef);
+    if (ref.current) observer.observe(ref.current);
     return () => {
-      if (currentRef) {
+      if (ref.current) {
         try {
-          observer.unobserve(currentRef);
+          observer.unobserve(ref.current);
         } catch (e) {}
       }
     };
@@ -204,14 +208,14 @@ const Button = ({
   ...props
 }) => {
   const baseStyle =
-    "px-6 py-3 rounded-lg font-bold transition-all duration-300 flex items-center justify-center gap-3 transform active:scale-95 cursor-pointer z-20 relative overflow-hidden group";
+    "px-6 py-3 rounded-lg font-bold transition-all duration-300 flex items-center justify-center gap-2 transform active:scale-95 cursor-pointer z-20 relative overflow-hidden group";
   const variants = {
     primary:
-      "bg-red-600 text-white shadow-lg shadow-red-600/30 border border-red-500 hover:shadow-red-500/50 hover:bg-red-700",
+      "bg-red-600 text-white shadow-lg shadow-red-600/30 border border-red-500 hover:shadow-red-500/50",
     secondary:
       "bg-slate-800 hover:bg-slate-700 text-white border border-slate-700",
     outline:
-      "bg-transparent border-2 border-slate-400 hover:border-white text-slate-100 hover:bg-white/10 hover:text-white",
+      "bg-transparent border-2 border-white/20 hover:border-white text-white hover:bg-white/10",
     accent:
       "bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-600/30",
     white: "bg-white text-black hover:bg-slate-200 border-white",
@@ -223,9 +227,10 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      <span className="relative z-10 flex items-center gap-3">
-        {children} {Icon && <Icon size={20} />}
+      <span className="relative z-10 flex items-center gap-2">
+        {children} {Icon && <Icon size={18} />}
       </span>
+      {/* Button Shine Effect */}
       <div className="absolute inset-0 h-full w-full scale-0 rounded-lg transition-all duration-300 group-hover:scale-100 group-hover:bg-white/10"></div>
     </button>
   );
@@ -234,30 +239,30 @@ const Button = ({
 const FeatureCard = ({ title, desc, icon: Icon, color, link, comingSoon }) => {
   const colorClass =
     {
-      red: "text-red-300 bg-red-500/10",
-      emerald: "text-emerald-300 bg-emerald-500/10",
-      amber: "text-amber-300 bg-amber-500/10",
-      blue: "text-blue-300 bg-blue-500/10",
-      indigo: "text-indigo-300 bg-indigo-500/10",
-      purple: "text-purple-300 bg-purple-500/10",
+      red: "text-red-400 bg-red-500/10",
+      emerald: "text-emerald-400 bg-emerald-500/10",
+      amber: "text-amber-400 bg-amber-500/10",
+      blue: "text-blue-400 bg-blue-500/10",
+      indigo: "text-indigo-400 bg-indigo-500/10",
+      purple: "text-purple-400 bg-purple-500/10",
     }[color] || "text-white bg-slate-500/10";
 
   return (
-    <article className="group relative bg-slate-900/40 backdrop-blur-md border border-slate-700 hover:border-red-500/50 p-6 rounded-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl hover:shadow-red-900/20">
+    <div className="group relative bg-slate-900/40 backdrop-blur-md border border-slate-800 hover:border-red-500/50 p-6 rounded-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl hover:shadow-red-900/20">
       <div
-        className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 ${colorClass} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
+        className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${colorClass} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
       >
-        <Icon size={28} />
+        <Icon size={24} />
       </div>
 
-      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-300 transition-colors">
+      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors">
         {title}
       </h3>
-      <p className="text-slate-300 text-sm mb-4 leading-relaxed">{desc}</p>
+      <p className="text-slate-400 text-sm mb-4 leading-relaxed">{desc}</p>
 
       {comingSoon ? (
-        <div className="inline-flex items-center text-sm font-semibold text-slate-400 cursor-not-allowed select-none bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-600">
-          Segera Hadir <Lock size={14} className="ml-2" />
+        <div className="inline-flex items-center text-sm font-semibold text-slate-500 cursor-not-allowed select-none bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+          Segera Hadir <Lock size={12} className="ml-2" />
         </div>
       ) : (
         <a
@@ -266,29 +271,27 @@ const FeatureCard = ({ title, desc, icon: Icon, color, link, comingSoon }) => {
           rel="noopener noreferrer"
           className={`inline-flex items-center text-sm font-semibold hover:underline transition-colors ${colorClass.split(" ")[0]} group-hover:translate-x-2 transform duration-300`}
         >
-          Akses Sistem <ArrowRight size={16} className="ml-1" />
+          Akses Sistem <ArrowRight size={14} className="ml-1" />
         </a>
       )}
-    </article>
+    </div>
   );
 };
-
-// --- KOMPONEN CARD DEPARTEMEN ---
-// --- KOMPONEN CARD DEPARTEMEN ---
+// --- KOMPONEN DEPARTEMEN ---
 const DepartmentCard = ({ dept }) => {
   const colorStyles = {
-    blue: "border-blue-400/30 bg-blue-500/5 text-blue-300 group-hover:bg-blue-500/10",
-    red: "border-red-400/30 bg-red-500/5 text-red-300 group-hover:bg-red-500/10",
+    blue: "border-blue-500/30 bg-blue-500/5 text-blue-400 group-hover:bg-blue-500/10",
+    red: "border-red-500/30 bg-red-500/5 text-red-400 group-hover:bg-red-500/10",
     amber:
-      "border-amber-400/30 bg-amber-500/5 text-amber-300 group-hover:bg-amber-500/10",
+      "border-amber-500/30 bg-amber-500/5 text-amber-400 group-hover:bg-amber-500/10",
     emerald:
-      "border-emerald-400/30 bg-emerald-500/5 text-emerald-300 group-hover:bg-emerald-500/10",
+      "border-emerald-500/30 bg-emerald-500/5 text-emerald-400 group-hover:bg-emerald-500/10",
     purple:
-      "border-purple-400/30 bg-purple-500/5 text-purple-300 group-hover:bg-purple-500/10",
-    rose: "border-rose-400/30 bg-rose-500/5 text-rose-300 group-hover:bg-rose-500/10",
+      "border-purple-500/30 bg-purple-500/5 text-purple-400 group-hover:bg-purple-500/10",
+    rose: "border-rose-500/30 bg-rose-500/5 text-rose-400 group-hover:bg-rose-500/10",
   }[dept.color];
 
-  // Styling untuk button berbentuk solid
+  // Styling untuk button
   const buttonColorStyles = {
     blue: "bg-blue-600 hover:bg-blue-700 text-white border-blue-500",
     red: "bg-red-600 hover:bg-red-700 text-white border-red-500",
@@ -299,70 +302,71 @@ const DepartmentCard = ({ dept }) => {
   }[dept.color];
 
   return (
-    <article
+    <div
       className={`group relative p-6 rounded-2xl border ${colorStyles} bg-slate-900/30 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl`}
     >
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex items-center gap-4 mb-3">
         <div
-          className={`p-3 rounded-lg bg-black/40 border border-white/10 transition-transform duration-500 group-hover:rotate-6`}
+          className={`p-3 rounded-lg bg-black/40 border border-white/5 transition-transform duration-500 group-hover:rotate-6`}
         >
-          <dept.icon size={32} aria-hidden="true" />
+          <dept.icon size={28} />
         </div>
         <div>
-          <h3 className="text-2xl font-black tracking-tighter">{dept.abbr}</h3>
+          <h4 className="text-2xl font-black tracking-tighter">{dept.abbr}</h4>
           <p className="text-[10px] uppercase tracking-widest opacity-70">
             Official Dept.
           </p>
         </div>
       </div>
-      <h4 className="text-white font-bold mb-2 text-lg">{dept.name}</h4>
-      <p className="text-slate-300 text-sm leading-relaxed mb-4">{dept.desc}</p>
+      <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">{dept.desc}</p>
       
-      {/* Button Style */}
+      {/* Button */}
       {dept.comingSoon ? (
         <button 
           disabled
-          className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-400 cursor-not-allowed bg-slate-800 px-4 py-3 rounded-lg border border-slate-600 transition-all"
+          className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-500 cursor-not-allowed bg-slate-800 px-4 py-2.5 rounded-lg border border-slate-700 transition-all"
         >
-          Segera Hadir <Lock size={16} className="ml-2" />
+          Segera Hadir <Lock size={12} className="ml-2" />
         </button>
       ) : (
         <a
           href={dept.link}
           target="_blank"
           rel="noopener noreferrer"
-          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
+          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
         >
           Bergabung bersama Kami
-          <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
+          <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
         </a>
       )}
-    </article>
+    </div>
   );
 };
 
+
 const StatItem = ({ label, value, icon: Icon, color }) => (
-  <div className="flex items-center gap-4 bg-black/50 backdrop-blur-md p-5 rounded-xl border border-slate-700 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
-    <div className={`p-3 rounded-lg bg-white/5 text-${color}-300`}>
-      <Icon size={28} aria-hidden="true" />
+  <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
+    <div className={`p-3 rounded-lg bg-white/5 text-${color}-400`}>
+      <Icon size={24} />
     </div>
     <div>
       <p className="text-2xl font-bold text-white font-mono">{value}</p>
-      <p className="text-xs text-slate-300 uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-slate-400 uppercase tracking-wider">{label}</p>
     </div>
   </div>
 );
 
 const RuleItem = ({ number, title, desc }) => (
-  <div className="flex gap-4 p-5 rounded-lg hover:bg-slate-800/50 transition-colors border-b border-slate-700 last:border-0 group cursor-default">
-    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-red-900/50 text-red-300 flex items-center justify-center font-bold text-sm border border-red-400/30 transition-transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white">
+  <div className="flex gap-4 p-4 rounded-lg hover:bg-slate-800/50 transition-colors border-b border-slate-800 last:border-0 group cursor-default">
+    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-900/50 text-red-400 flex items-center justify-center font-bold text-sm border border-red-500/30 transition-transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white">
       {number}
     </div>
     <div>
-      <h4 className="font-bold text-white mb-2 group-hover:text-red-300 transition-colors">
+      <h4 className="font-bold text-white mb-1 group-hover:text-red-400 transition-colors">
         {title}
       </h4>
-      <p className="text-slate-300 text-sm leading-relaxed">{desc}</p>
+      <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
     </div>
   </div>
 );
@@ -372,26 +376,25 @@ const FaqItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-slate-700 last:border-0">
+    <div className="border-b border-slate-800 last:border-0">
       <button
-        className="w-full py-5 px-3 flex items-center justify-between text-left group hover:bg-slate-900/50 rounded-lg transition-colors"
+        className="w-full py-4 px-2 flex items-center justify-between text-left group hover:bg-slate-900/50 rounded-lg transition-colors"
         onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
       >
         <span
-          className={`font-semibold text-lg transition-colors ${isOpen ? "text-red-300" : "text-slate-100 group-hover:text-white"}`}
+          className={`font-semibold text-lg transition-colors ${isOpen ? "text-red-400" : "text-slate-200 group-hover:text-white"}`}
         >
           {question}
         </span>
         <ChevronDown
-          className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-red-300" : ""}`}
-          size={22}
+          className={`text-slate-500 transition-transform duration-300 ${isOpen ? "rotate-180 text-red-400" : ""}`}
+          size={20}
         />
       </button>
       <div
-        className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-48 opacity-100 py-3" : "max-h-0 opacity-0"}`}
+        className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-48 opacity-100 py-2" : "max-h-0 opacity-0"}`}
       >
-        <p className="text-slate-300 leading-relaxed px-3 pb-3 text-sm md:text-base">
+        <p className="text-slate-400 leading-relaxed px-2 pb-2 text-sm md:text-base">
           {answer}
         </p>
       </div>
@@ -414,6 +417,7 @@ export default function JKCLandingPage() {
 
   const openLink = (url) => window.open(url, "_blank");
 
+  // --- FUNGSI SCROLL ---
   const scrollToSection = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
@@ -559,10 +563,10 @@ export default function JKCLandingPage() {
   ];
 
   const galleryImages = [
-    "/Screenshot_2025-09-08_162255.png",
-    "/Screenshot_2025-09-07_120538.png",
-    "/Screenshot_2025-09-08_145048.png",
-    "/Screenshot_2025-09-08_143909.png",
+    "/Screenshot_2025-09-08_162255.png", // City
+    "/Screenshot_2025-09-07_120538.png", // Police
+    "/Screenshot_2025-09-08_145048.png", // Medic
+    "/Screenshot_2025-09-08_143909.png", // Night life
   ];
 
   const faqData = [
@@ -590,20 +594,12 @@ export default function JKCLandingPage() {
 
   return (
     <div
-      className="min-h-screen font-sans bg-[#050505] text-slate-200 selection:bg-red-500/30 scroll-smooth"
-      style={{
-        backgroundColor: "#050505",
-        color: "#e2e8f0",
-        overflowX: "hidden",
-        maxWidth: "100vw",
-        width: "100%",
-      }}
+      className="min-h-screen font-sans bg-[#050505] text-slate-200 selection:bg-red-500/30 overflow-x-hidden scroll-smooth"
+      style={{ backgroundColor: "#050505", color: "#e2e8f0" }}
     >
       {/* 1. NAVBAR */}
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-lg border-b border-white/10 py-3 shadow-lg" : "bg-transparent py-6"}`}
-        role="navigation"
-        aria-label="Main navigation"
+        className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-lg border-b border-white/5 py-3 shadow-lg" : "bg-transparent py-6"}`}
       >
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div
@@ -612,7 +608,7 @@ export default function JKCLandingPage() {
           >
             <img
               src="/JKCRP-BT.png"
-              alt="Logo JKC:RP"
+              alt="JKC Logo"
               className="w-12 h-12 object-contain transition-transform group-hover:scale-110 group-hover:rotate-3"
               onError={(e) => {
                 e.target.onerror = null;
@@ -624,13 +620,14 @@ export default function JKCLandingPage() {
             </span>
           </div>
 
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             {["History", "Depts", "Gallery", "Rules", "Ecosystem"].map(
               (item) => (
                 <button
                   key={item}
                   onClick={(e) => scrollToSection(e, item.toLowerCase())}
-                  className="text-sm font-medium text-slate-100 hover:text-red-300 transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-red-500 after:left-0 after:-bottom-1 after:transition-all hover:after:w-full bg-transparent border-none cursor-pointer"
+                  className="text-sm font-medium text-slate-200 hover:text-red-400 transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-red-500 after:left-0 after:-bottom-1 after:transition-all hover:after:w-full bg-transparent border-none cursor-pointer"
                 >
                   {item === "Depts"
                     ? "Departemen"
@@ -657,41 +654,40 @@ export default function JKCLandingPage() {
           <button
             className="md:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-            aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
 
+        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-md border-b border-red-900/30 p-6 flex flex-col gap-4 shadow-2xl animate-slide-down">
             <button
-              className="text-left text-slate-200 hover:text-red-300 py-2 bg-transparent border-none"
+              className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none"
               onClick={(e) => scrollToSection(e, "history")}
             >
               Sejarah
             </button>
             <button
-              className="text-left text-slate-200 hover:text-red-300 py-2 bg-transparent border-none"
+              className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none"
               onClick={(e) => scrollToSection(e, "depts")}
             >
               Departemen
             </button>
             <button
-              className="text-left text-slate-200 hover:text-red-300 py-2 bg-transparent border-none"
+              className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none"
               onClick={(e) => scrollToSection(e, "gallery")}
             >
               Galeri
             </button>
             <button
-              className="text-left text-slate-200 hover:text-red-300 py-2 bg-transparent border-none"
+              className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none"
               onClick={(e) => scrollToSection(e, "rules")}
             >
               Peraturan
             </button>
             <button
-              className="text-left text-slate-200 hover:text-red-300 py-2 bg-transparent border-none"
+              className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none"
               onClick={(e) => scrollToSection(e, "ecosystem")}
             >
               Ekosistem
@@ -707,625 +703,629 @@ export default function JKCLandingPage() {
         )}
       </nav>
 
-      {/* MAIN CONTENT */}
-      <main>
-        {/* 2. HERO SECTION */}
-        <header className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050505]">
-          <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-[#0a0505] to-black z-0" />
-            <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0" />
-            <div
-              className="absolute inset-0 opacity-20 z-10 animate-grid-move"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
-                backgroundSize: "50px 50px",
-                maskImage:
-                  "radial-gradient(circle at center, black 30%, transparent 80%)",
-                transform: "perspective(500px) rotateX(20deg) scale(1.5)",
-              }}
-            ></div>
-            <div
-              className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none mix-blend-overlay"
-              style={{
-                backgroundImage:
-                  'url("https://grainy-gradients.vercel.app/noise.svg")',
-              }}
+      {/* 2. HERO SECTION */}
+      <header className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050505]">
+        {/* === DYNAMIC BACKGROUND LAYERS === */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
+          {/* Layer 0: Base Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-[#0a0505] to-black z-0" />
+
+          {/* Layer 1: Image + Ken Burns + Filters */}
+          <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0">
+            <img
+              // src="https://images.unsplash.com/photo-1555899434-94d1368b7bdb?q=80&w=2070&auto=format&fit=crop"
+              alt="Monas Jakarta Background"
+              className="w-full h-full object-cover animate-ken-burns filter contrast-125 brightness-75 grayscale-[30%]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/80 z-20" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-20" />
-            <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-red-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob z-10" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-2000 z-10" />
-            <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[80px] mix-blend-screen animate-blob animation-delay-4000 z-10" />
           </div>
 
-          <div className="container mx-auto px-6 relative z-30">
-            <div className="max-w-5xl mx-auto text-center">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-red-900/20 border border-red-400/40 text-red-300 text-xs font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm animate-fade-in-down">
-                <span className="w-2 h-2 rounded-full bg-red-400 animate-ping absolute opacity-75" />
-                <span className="w-2 h-2 rounded-full bg-red-400 relative" />
-                Official JKC:RP WEBSITE
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] animate-fade-in-up delay-100">
-                JAKARTA CITY <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 drop-shadow-none bg-300% animate-gradient-flow">
-                  ROLEPLAY
-                </span>
-              </h1>
-              <p className="text-lg md:text-2xl text-slate-200 max-w-3xl mx-auto mb-12 leading-relaxed font-light drop-shadow-md animate-fade-in-up delay-200">
-                Rasakan denyut nadi Ibukota di platform{" "}
-                <strong className="text-white">Roblox ER:LC</strong>. Sistem
-                pemerintahan digital, ekonomi realistis, dan hukum yang
-                ditegakkan secara ketat.
-              </p>
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up delay-300">
-                <Button
-                  variant="primary"
-                  className="w-full md:w-auto h-16 px-10 text-lg hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:-translate-y-1 transition-transform"
-                  icon={Play}
-                  onClick={() => openLink(LINKS.play)}
-                >
-                  Mainkan Sekarang
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full md:w-auto h-16 px-10 text-lg backdrop-blur-sm bg-white/5 border-slate-400/50 hover:bg-white/10 hover:border-white/50 hover:-translate-y-1 transition-transform"
-                  icon={BookOpen}
-                  onClick={(e) => scrollToSection(e, "rules")}
-                >
-                  Baca Peraturan
-                </Button>
-              </div>
-              <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up delay-500">
-                <StatItem
-                  label="Platform"
-                  value="Roblox"
-                  icon={Monitor}
-                  color="blue"
-                />
-                <StatItem
-                  label="Apps System"
-                  value="5 Apps"
-                  icon={Activity}
-                  color="red"
-                />
-                <StatItem
-                  label="Ekonomi"
-                  value="Stabil"
-                  icon={TrendingUp}
-                  color="emerald"
-                />
-                <StatItem
-                  label="Server"
-                  value="Online"
-                  icon={Server}
-                  color="green"
-                />
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* 2.5. ABOUT SECTION */}
-        <section
-          id="features"
-          className="py-24 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[100px] -z-10 animate-blob" />
-          <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
-            <div className="md:w-1/2 relative z-10">
-              <RevealOnScroll className="space-y-6">
-                <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-                  Kearifan Lokal <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-800">
-                    Roblox ER:LC
-                  </span>
-                </h2>
-                <p className="text-slate-300 text-lg leading-relaxed">
-                  JKC:RP dibangun di atas platform{" "}
-                  <strong className="text-white">
-                    Emergency Response: Liberty County
-                  </strong>
-                  . Kami menghadirkan tekstur seragam Polisi, Pemadam, Medis,
-                  dan kendaraan khas Indonesia yang autentik, dipadukan dengan
-                  roleplay serius.
-                </p>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <Button
-                    variant="accent"
-                    icon={ThumbsUp}
-                    onClick={() => openLink(LINKS.vote)}
-                  >
-                    Vote Server
-                  </Button>
-                  <Button
-                    variant="outline"
-                    icon={Star}
-                    onClick={() => openLink(LINKS.rating)}
-                  >
-                    Beri Rating
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    icon={Heart}
-                    className="border-red-500/50 text-red-300 hover:bg-red-900/50 hover:text-white"
-                    onClick={() => openLink(LINKS.donation)}
-                  >
-                    Donasi
-                  </Button>
-                </div>
-              </RevealOnScroll>
-            </div>
-            <div className="md:w-1/2 w-full">
-              <RevealOnScroll delay={200}>
-                <div className="bg-slate-900/30 backdrop-blur-md p-8 rounded-3xl border border-slate-700 relative overflow-hidden group hover:border-red-500/30 transition-all duration-500 shadow-2xl hover:shadow-red-900/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="flex items-center gap-6 mb-8 relative z-10">
-                    <div className="w-16 h-16 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center border border-white/10 shadow-inner group-hover:scale-110 transition-transform">
-                      <Monitor
-                        className="text-red-400 animate-pulse"
-                        size={32}
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-xl">
-                        Server Status
-                      </h3>
-                      <p className="text-emerald-300 text-sm flex items-center gap-2 mt-1 font-mono">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                        ONLINE • SEASON 2
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-6 relative z-10">
-                    <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
-                      <span className="text-slate-300">Platform</span>
-                      <span className="text-white font-semibold font-mono tracking-wide">
-                        ROBLOX (PC/MOBILE)
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
-                      <span className="text-slate-300">Base Game</span>
-                      <span className="text-white font-semibold font-mono tracking-wide">
-                        Emergency Response: Liberty County
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm pb-2">
-                      <span className="text-slate-300">Region</span>
-                      <span className="text-white font-semibold font-mono tracking-wide">
-                        INDONESIA (WIB)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </RevealOnScroll>
-            </div>
-          </div>
-        </section>
-
-        {/* GALLERY SECTION */}
-        <section
-          id="gallery"
-          className="py-24 bg-[#020202] relative border-t border-white/5"
-        >
+          {/* Layer 2: Moving Tech Grid Overlay (Perspective) */}
           <div
-            className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+            className="absolute inset-0 opacity-20 z-10 animate-grid-move"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
+              backgroundSize: "50px 50px",
+              maskImage:
+                "radial-gradient(circle at center, black 30%, transparent 80%)",
+              transform: "perspective(500px) rotateX(20deg) scale(1.5)",
+            }}
+          ></div>
+
+          {/* Layer 3: Noise Texture */}
+          <div
+            className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none mix-blend-overlay"
             style={{
               backgroundImage:
                 'url("https://grainy-gradients.vercel.app/noise.svg")',
             }}
           />
-          <div className="container mx-auto px-6 relative z-10">
-            <RevealOnScroll className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                Galeri Kota
-              </h2>
-              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-                Intip sedikit suasana kehidupan dan keseruan roleplay di Jakarta
-                City.
-              </p>
-            </RevealOnScroll>
 
-            <RevealOnScroll className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {galleryImages.map((src, i) => (
-                <div
-                  key={i}
-                  className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-slate-700"
-                >
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img
-                    src={src}
-                    alt={`Galeri ${i + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                    <div className="bg-black/50 backdrop-blur-md p-3 rounded-full border border-white/20">
-                      <Camera
-                        className="text-white"
-                        size={24}
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </RevealOnScroll>
-          </div>
-        </section>
+          {/* Layer 4: Cinematic Gradients */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/80 z-20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-20" />
 
-        {/* HISTORY SECTION */}
-        <section
-          id="history"
-          className="py-24 bg-[#080404] relative border-y border-white/5 overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-900/10 via-[#0a0505] to-black z-0" />
+          {/* Layer 5: Ambient Glows (Animated Blobs) */}
+          <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-red-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob z-10" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-2000 z-10" />
+          <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[80px] mix-blend-screen animate-blob animation-delay-4000 z-10" />
+        </div>
 
-          <div className="container mx-auto px-6 relative z-10">
-            <RevealOnScroll className="max-w-4xl mx-auto text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-600 text-slate-300 text-xs font-bold uppercase tracking-widest mb-6">
-                <span className="text-red-400 inline-flex items-center gap-1">
-                  <Calendar size={12} aria-hidden="true" /> Est.
-                </span>22 November 2023
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">
-                Sejarah <span className="text-red-500">Jakarta City</span>
-              </h2>
-              <div className="bg-slate-900/30 backdrop-blur-md border border-slate-700 p-8 rounded-3xl relative overflow-hidden group hover:border-red-500/20 transition-all duration-500">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent group-hover:via-red-400 transition-all duration-500" />
-                <p className="text-slate-200 text-lg leading-relaxed mb-6">
-                  <strong className="text-white">Jakarta City Roleplay</strong>{" "}
-                  adalah Server bertema Kota Jakarta dari Indonesia. JKC:RP
-                  merupakan{" "}
-                  <span className="text-white font-bold border-b border-red-500/50 pb-0.5">
-                    server Indonesia pertama di ER:LC
-                  </span>{" "}
-                  yang memelopori penggunaan sistem{" "}
-                  <strong className="text-white">Economy Modern</strong>,
-                  mencakup integrasi{" "}
-                  <strong className="text-white">Sistem Pajak</strong> dan{" "}
-                  <strong className="text-white">
-                    Composite Index (Pasar Saham)
-                  </strong>{" "}
-                  yang real-time.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <div className="bg-black/40 p-4 rounded-xl border border-slate-700 flex flex-col items-center justify-center hover:bg-white/5 transition-colors">
-                    <span className="text-slate-400 text-xs uppercase tracking-widest mb-2">
-                      Tanggal Berdiri
-                    </span>
-                    <span className="text-white font-mono text-xl font-bold">
-                      22 Nov 2023
-                    </span>
-                  </div>
-                  <div className="bg-black/40 p-4 rounded-xl border border-slate-700 flex flex-col items-center justify-center hover:bg-white/5 transition-colors">
-                    <span className="text-slate-400 text-xs uppercase tracking-widest mb-2">
-                      In-Game Code
-                    </span>
-                    <span className="text-red-400 font-mono text-xl font-bold tracking-widest animate-pulse">
-                      jkcrp
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </RevealOnScroll>
-          </div>
-        </section>
-
-        {/* DEPARTMENTS SECTION */}
-        <section
-          id="depts"
-          className="py-24 bg-[#040608] relative border-b border-white/5"
-        >
-          <div
-            className="absolute inset-0 opacity-10 z-0 pointer-events-none"
-            style={{
-              backgroundImage:
-                "linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(to right, #1e293b 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#040608]/50 to-[#040608] z-0"></div>
-
-          <div className="container mx-auto px-6 relative z-10">
-            <RevealOnScroll className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                Departemen Pemerintah
-              </h2>
-              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-                Struktur organisasi resmi yang menjaga stabilitas dan keamanan
-                Jakarta City.
-              </p>
-            </RevealOnScroll>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {departments.map((dept, index) => (
-                <RevealOnScroll key={dept.id} delay={index * 100}>
-                  <DepartmentCard dept={dept} />
-                </RevealOnScroll>
-              ))}
+        <div className="container mx-auto px-6 relative z-30">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-900/20 border border-red-500/40 text-red-400 text-xs font-bold uppercase tracking-[0.2em] mb-8 backdrop-blur-sm animate-fade-in-down">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping absolute opacity-75" />
+              <span className="w-2 h-2 rounded-full bg-red-500 relative" />
+              Official JKC:RP WEBSITE
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black text-white mb-6 leading-tight tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] animate-fade-in-up delay-100">
+              JAKARTA CITY <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 drop-shadow-none bg-300% animate-gradient-flow">
+                ROLEPLAY
+              </span>
+            </h1>
+            <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 leading-relaxed font-light drop-shadow-md animate-fade-in-up delay-200">
+              Rasakan denyut nadi Ibukota di platform{" "}
+              <strong>Roblox ER:LC</strong>. Sistem pemerintahan digital,
+              ekonomi realistis, dan hukum yang ditegakkan secara ketat.
+            </p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in-up delay-300">
+              <Button
+                variant="primary"
+                className="w-full md:w-auto h-16 px-10 text-lg hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:-translate-y-1 transition-transform"
+                icon={Play}
+                onClick={() => openLink(LINKS.play)}
+              >
+                Mainkan Sekarang
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full md:w-auto h-16 px-10 text-lg backdrop-blur-sm bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 transition-transform"
+                icon={BookOpen}
+                onClick={(e) => scrollToSection(e, "rules")}
+              >
+                Baca Peraturan
+              </Button>
+            </div>
+            <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up delay-500">
+              <StatItem
+                label="Platform"
+                value="Roblox"
+                icon={Monitor}
+                color="blue"
+              />
+              <StatItem
+                label="Apps System"
+                value="5 Apps"
+                icon={Activity}
+                color="red"
+              />
+              <StatItem
+                label="Ekonomi"
+                value="Stabil"
+                icon={TrendingUp}
+                color="emerald"
+              />
+              <StatItem
+                label="Server"
+                value="Online"
+                icon={Server}
+                color="green"
+              />
             </div>
           </div>
-        </section>
+        </div>
+      </header>
 
-        {/* RULES SECTION */}
-        <section
-          id="rules"
-          className="py-24 bg-[#080404] relative border-b border-white/5"
-        >
-          <div
-            className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 10px)",
-            }}
-          />
-          <div className="container mx-auto px-6 relative z-10">
-            <RevealOnScroll className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                Peraturan & Regulasi
+      {/* 2.5. ABOUT / PLATFORM SECTION (Background Gradient) */}
+      <section
+        id="features"
+        className="py-24 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden"
+      >
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[100px] -z-10 animate-blob" />
+        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+          <div className="md:w-1/2 relative z-10">
+            <RevealOnScroll className="space-y-6">
+              <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+                Kearifan Lokal <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">
+                  Roblox ER:LC
+                </span>
               </h2>
-              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-                Kami menjunjung tinggi kualitas Roleplay. Patuhi aturan berikut
-                untuk menjaga kenyamanan komunitas.
+              <p className="text-slate-400 text-lg leading-relaxed">
+                JKC:RP dibangun di atas platform{" "}
+                <strong>Emergency Response: Liberty County</strong>. Kami
+                menghadirkan tekstur seragam Polisi, Pemadam, Medis, dan
+                kendaraan khas Indonesia yang autentik, dipadukan dengan
+                roleplay serius.
               </p>
-              <div className="flex justify-center gap-4 mt-10">
-                <button
-                  onClick={() => setActiveTab("ingame")}
-                  className={`px-8 py-3 rounded-full font-bold transition-all tracking-wide ${activeTab === "ingame" ? "bg-red-700 text-white shadow-[0_0_20px_rgba(185,28,28,0.4)] scale-105" : "bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-600"}`}
-                >
-                  In-Game Rules
-                </button>
-                <button
-                  onClick={() => setActiveTab("discord")}
-                  className={`px-8 py-3 rounded-full font-bold transition-all tracking-wide ${activeTab === "discord" ? "bg-[#5865F2] text-white shadow-[0_0_20px_rgba(88,101,242,0.4)] scale-105" : "bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-600"}`}
-                >
-                  Discord Rules
-                </button>
-              </div>
-            </RevealOnScroll>
-            <RevealOnScroll className="bg-slate-900/30 backdrop-blur-md border border-slate-700 rounded-3xl p-6 md:p-10 max-w-7xl mx-auto shadow-2xl">
-              {activeTab === "ingame" ? (
-                <div className="animate-fade-in-up">
-                  <div className="flex items-center gap-4 mb-10 pb-6 border-b border-slate-700">
-                    <Shield
-                      className="text-red-400"
-                      size={40}
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <h3 className="text-2xl font-bold text-white">
-                        JKC:RP In-Game Regulations
-                      </h3>
-                      <p className="text-slate-400 text-sm mt-1">
-                        Berlaku untuk semua warga kota tanpa terkecuali.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {inGameRules.map((rule, idx) => (
-                      <RuleItem
-                        key={idx}
-                        number={idx + 1}
-                        title={rule.title}
-                        desc={rule.desc}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="animate-fade-in-up">
-                  <div className="flex items-center gap-4 mb-10 pb-6 border-b border-slate-700">
-                    <DiscordIcon className="text-[#5865F2]" size={40} />
-                    <div>
-                      <h3 className="text-2xl font-bold text-white">
-                        JKC:RP Discord Guidelines
-                      </h3>
-                      <p className="text-slate-400 text-sm mt-1">
-                        Etika berkomunikasi dalam komunitas kami.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {discordRules.map((rule, idx) => (
-                      <RuleItem
-                        key={idx}
-                        number={idx + 1}
-                        title={rule.title}
-                        desc={rule.desc}
-                      />
-                    ))}
-                  </div>
-                  <div className="mt-10 p-6 bg-red-900/10 border border-red-500/20 rounded-2xl flex gap-5 items-start">
-                    <AlertTriangle
-                      className="text-red-400 shrink-0 mt-1 animate-pulse"
-                      size={28}
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <h4 className="font-bold text-red-300 text-lg">
-                        Peringatan Keras
-                      </h4>
-                      <p className="text-slate-300 mt-2 leading-relaxed">
-                        Pelanggaran serius terhadap aturan ini dapat
-                        mengakibatkan{" "}
-                        <span className="text-white font-semibold">
-                          Permanent Ban
-                        </span>{" "}
-                        dari server Discord maupun akses In-Game. Kami tidak
-                        mentolerir toksisitas.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </RevealOnScroll>
-          </div>
-        </section>
-
-        {/* FAQ SECTION */}
-        <section id="faq" className="py-24 bg-[#0a0505] relative">
-          <div className="container mx-auto px-6">
-            <div className="flex flex-col md:flex-row gap-16">
-              <div className="md:w-1/3">
-                <RevealOnScroll>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-600 text-slate-300 text-xs font-bold uppercase tracking-widest mb-6">
-                    <HelpCircle
-                      size={14}
-                      className="text-red-400"
-                      aria-hidden="true"
-                    />{" "}
-                    Pusat Bantuan
-                  </div>
-                  <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                    Sering Ditanyakan
-                  </h2>
-                  <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                    Punya pertanyaan seputar JKC:RP? Cek jawaban dari pertanyaan
-                    yang paling sering diajukan oleh komunitas kami.
-                  </p>
-                  <Button
-                    variant="outline"
-                    icon={DiscordIcon}
-                    onClick={() => openLink(LINKS.discordQNA)}
-                  >
-                    Tanya di Discord
-                  </Button>
-                </RevealOnScroll>
-              </div>
-              <div className="md:w-2/3">
-                <RevealOnScroll delay={200}>
-                  <div className="space-y-2">
-                    {faqData.map((item, idx) => (
-                      <FaqItem key={idx} question={item.q} answer={item.a} />
-                    ))}
-                  </div>
-                </RevealOnScroll>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ECOSYSTEM SECTION */}
-        <section
-          id="ecosystem"
-          className="py-24 bg-gradient-to-b from-[#0a0f0d] to-black"
-        >
-          <div className="absolute inset-0 bg-emerald-900/5 z-0 pointer-events-none mix-blend-screen" />
-          <div className="container mx-auto px-6 relative z-10">
-            <RevealOnScroll className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                Ekosistem Digital Terintegrasi
-              </h2>
-              <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-                Satu akun untuk semua layanan. Dari Pemerintahan hingga Ekonomi,
-                semua terhubung secara{" "}
-                <strong className="text-white">Real-Time</strong>.
-              </p>
-            </RevealOnScroll>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <RevealOnScroll delay={100}>
-                <FeatureCard
-                  title="JCN Network"
-                  desc="Portal berita real-time. Baca berita terkini seputar kriminal, politik, dan event kota."
-                  icon={Newspaper}
-                  color="red"
-                  link={LINKS.news}
-                />
-              </RevealOnScroll>
-              <RevealOnScroll delay={200}>
-                <FeatureCard
-                  title="Kejaksaan Negeri"
-                  desc="Sistem manajemen perkara pidana dan database kriminal terpadu."
-                  icon={Gavel}
-                  color="emerald"
-                  link={LINKS.kejaksaan}
-                  comingSoon={true}
-                />
-              </RevealOnScroll>
-              <RevealOnScroll delay={300}>
-                <FeatureCard
-                  title="Pasar Saham JCI"
-                  desc="Investasi saham dinamis. Pantau harga pasar dan jadilah konglomerat."
-                  icon={TrendingUp}
-                  color="amber"
-                  link={LINKS.market}
-                />
-              </RevealOnScroll>
-              <RevealOnScroll delay={400}>
-                <FeatureCard
-                  title="E-Tax Jakarta"
-                  desc="Bayar pajak kendaraan dan properti Anda dengan mudah melalui sistem E-Tax."
-                  icon={Landmark}
-                  color="blue"
-                  link={LINKS.pajak}
-                />
-              </RevealOnScroll>
-              <RevealOnScroll delay={500}>
-                <FeatureCard
-                  title="KPK Center (BAK)"
-                  desc="Layanan pengaduan masyarakat dan pelaporan LHKPN pejabat negara."
-                  icon={Search}
-                  color="indigo"
-                  link={LINKS.bak}
-                />
-              </RevealOnScroll>
-              <RevealOnScroll delay={600}>
-                <FeatureCard
-                  title="Citra AI Assistant"
-                  desc="Bot pintar yang siap menjawab pertanyaan Anda seputar hukum dan kota 24/7."
-                  icon={Activity}
-                  color="purple"
-                  link={LINKS.discordcitra}
-                />
-              </RevealOnScroll>
-            </div>
-          </div>
-        </section>
-
-        {/* CALL TO ACTION SECTION */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-red-900/20 via-black to-blue-900/20 animate-gradient-flow bg-[length:200%_200%] z-0"></div>
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] z-0"></div>
-
-          <div className="container mx-auto px-6 relative z-10 text-center">
-            <RevealOnScroll>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Siap Memulai Cerita Anda?
-              </h2>
-              <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-10">
-                Bergabunglah dengan ribuan warga Jakarta City lainnya. Ciptakan
-                karir, tegakkan hukum, atau jadilah penguasa ekonomi kota.
-              </p>
-              <div className="flex justify-center gap-4">
+              <div className="flex flex-wrap gap-4 pt-4">
                 <Button
-                  variant="white"
-                  icon={Play}
-                  onClick={() => openLink(LINKS.play)}
+                  variant="accent"
+                  icon={ThumbsUp}
+                  onClick={() => openLink(LINKS.vote)}
                 >
-                  Mainkan Sekarang
+                  Vote Server
                 </Button>
                 <Button
-                  variant="primary"
+                  variant="outline"
+                  icon={Star}
+                  onClick={() => openLink(LINKS.rating)}
+                >
+                  Beri Rating
+                </Button>
+                <Button
+                  variant="secondary"
+                  icon={Heart}
+                  className="border-red-500/50 text-red-400 hover:bg-red-900/50 hover:text-white"
+                  onClick={() => openLink(LINKS.donation)}
+                >
+                  Donasi
+                </Button>
+              </div>
+            </RevealOnScroll>
+          </div>
+          <div className="md:w-1/2 w-full">
+            <RevealOnScroll delay={200}>
+              <div className="bg-slate-900/30 backdrop-blur-md p-8 rounded-3xl border border-white/5 relative overflow-hidden group hover:border-red-500/30 transition-all duration-500 shadow-2xl hover:shadow-red-900/10">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex items-center gap-6 mb-8 relative z-10">
+                  <div className="w-16 h-16 bg-gradient-to-br from-slate-800 to-black rounded-2xl flex items-center justify-center border border-white/10 shadow-inner group-hover:scale-110 transition-transform">
+                    <Monitor className="text-red-500 animate-pulse" size={32} />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-xl">
+                      Server Status
+                    </h4>
+                    <p className="text-emerald-400 text-sm flex items-center gap-2 mt-1 font-mono">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                      ONLINE • SEASON 2
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-6 relative z-10">
+                  <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
+                    <span className="text-slate-400">Platform</span>
+                    <span className="text-white font-semibold font-mono tracking-wide">
+                      ROBLOX (PC/MOBILE)
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
+                    <span className="text-slate-400">Base Game</span>
+                    <span className="text-white font-semibold font-mono tracking-wide">
+                      ER: LIBERTY COUNTY
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm pb-2">
+                    <span className="text-slate-400">Region</span>
+                    <span className="text-white font-semibold font-mono tracking-wide">
+                      INDONESIA (WIB)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </RevealOnScroll>
+          </div>
+        </div>
+      </section>
+
+      {/* --- NEW SECTION: GALLERY / SNEAK PEEK (Pure Black w/ Noise) --- */}
+      <section
+        id="gallery"
+        className="py-24 bg-[#020202] relative border-t border-white/5"
+      >
+        {/* Noise Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              'url("https://grainy-gradients.vercel.app/noise.svg")',
+          }}
+        />
+        <div className="container mx-auto px-6 relative z-10">
+          <RevealOnScroll className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Galeri Kota
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+              Intip sedikit suasana kehidupan dan keseruan roleplay di Jakarta
+              City.
+            </p>
+          </RevealOnScroll>
+
+          <RevealOnScroll className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {galleryImages.map((src, i) => (
+              <div
+                key={i}
+                className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-white/5"
+              >
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                <img
+                  src={src}
+                  alt={`Gallery ${i}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <div className="bg-black/50 backdrop-blur-md p-3 rounded-full border border-white/20">
+                    <Camera className="text-white" size={24} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* 2.8 HISTORY SECTION (Spotlight Effect) */}
+      <section
+        id="history"
+        className="py-24 bg-[#080404] relative border-y border-white/5 overflow-hidden"
+      >
+        {/* Warm Radial Glow - Sedikit ditingkatkan opacity-nya agar gradasinya lebih halus */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-950/20 via-[#0a0505] to-black z-0" />
+
+        <div className="container mx-auto px-6 relative z-10">
+          <RevealOnScroll className="max-w-4xl mx-auto text-center mb-12">
+            {/* BADGE FIX: Menggunakan flex & gap untuk menyejajarkan icon */}
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-900/50 border border-slate-700/50 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+              <span className="flex items-center gap-1.5 text-red-500">
+                <Calendar size={13} strokeWidth={2.5} className="shrink-0" />
+                <span>EST.</span>
+              </span>
+              <span className="w-[1px] h-3 bg-slate-700" />{" "}
+              {/* Separator vertikal halus */}
+              <span className="text-slate-200">22 November 2023</span>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">
+              Sejarah <span className="text-red-600">Jakarta City</span>
+            </h2>
+
+            <div className="bg-slate-900/20 backdrop-blur-xl border border-slate-800/60 p-8 md:p-12 rounded-[2rem] relative overflow-hidden group hover:border-red-500/30 transition-all duration-700">
+              {/* Animated Top Border */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent group-hover:via-red-400 transition-all duration-500" />
+
+              <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-8">
+                <strong className="text-white">Jakarta City Roleplay</strong>{" "}
+                adalah Server bertema Kota Jakarta dari Indonesia. JKC:RP
+                merupakan{" "}
+                <span className="text-white font-bold border-b-2 border-red-600/50 pb-1">
+                  server Indonesia pertama di ER:LC
+                </span>{" "}
+                yang memelopori penggunaan sistem{" "}
+                <strong className="text-red-400">Economy Modern</strong>,
+                mencakup integrasi <strong>Sistem Pajak</strong> dan{" "}
+                <strong>Composite Index</strong> yang real-time.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
+                <div className="bg-black/40 p-5 rounded-2xl border border-white/5 flex flex-col items-center justify-center hover:bg-white/5 transition-all duration-300 group/item">
+                  <span className="text-slate-500 text-[10px] uppercase tracking-[0.2em] mb-2 group-hover/item:text-slate-300 transition-colors">
+                    Tanggal Berdiri
+                  </span>
+                  <span className="text-white font-mono text-xl font-bold">
+                    22 Nov 2023
+                  </span>
+                </div>
+                <div className="bg-black/40 p-5 rounded-2xl border border-white/5 flex flex-col items-center justify-center hover:border-red-500/20 hover:bg-red-500/5 transition-all duration-300 group/item">
+                  <span className="text-slate-500 text-[10px] uppercase tracking-[0.2em] mb-2 group-hover/item:text-red-400/70 transition-colors">
+                    In-Game Code
+                  </span>
+                  <span className="text-red-500 font-mono text-2xl font-black tracking-[0.15em] animate-pulse">
+                    JKCRP
+                  </span>
+                </div>
+              </div>
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* 2.9 DEPARTMENTS SECTION (Blue Tech Grid) */}
+      <section
+        id="depts"
+        className="py-24 bg-[#040608] relative border-b border-white/5"
+      >
+        <div
+          className="absolute inset-0 opacity-10 z-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(to right, #1e293b 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#040608]/50 to-[#040608] z-0"></div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <RevealOnScroll className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Departemen Pemerintah
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+              Struktur organisasi resmi yang menjaga stabilitas dan keamanan
+              Jakarta City.
+            </p>
+          </RevealOnScroll>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {departments.map((dept, index) => (
+              <RevealOnScroll key={dept.id} delay={index * 100}>
+                <DepartmentCard dept={dept} />
+              </RevealOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. RULES SECTION (Subtle Diagonal Lines) */}
+      <section
+        id="rules"
+        className="py-24 bg-[#080404] relative border-b border-white/5"
+      >
+        <div
+          className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 10px)",
+          }}
+        />
+        <div className="container mx-auto px-6 relative z-10">
+          <RevealOnScroll className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Peraturan & Regulasi
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+              Kami menjunjung tinggi kualitas Roleplay. Patuhi aturan berikut
+              untuk menjaga kenyamanan komunitas.
+            </p>
+            <div className="flex justify-center gap-4 mt-10">
+              <button
+                onClick={() => setActiveTab("ingame")}
+                className={`px-8 py-3 rounded-full font-bold transition-all tracking-wide ${activeTab === "ingame" ? "bg-red-700 text-white shadow-[0_0_20px_rgba(185,28,28,0.4)] scale-105" : "bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800"}`}
+              >
+                In-Game Rules
+              </button>
+              <button
+                onClick={() => setActiveTab("discord")}
+                className={`px-8 py-3 rounded-full font-bold transition-all tracking-wide ${activeTab === "discord" ? "bg-[#5865F2] text-white shadow-[0_0_20px_rgba(88,101,242,0.4)] scale-105" : "bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800"}`}
+              >
+                Discord Rules
+              </button>
+            </div>
+          </RevealOnScroll>
+          <RevealOnScroll className="bg-slate-900/30 backdrop-blur-md border border-white/5 rounded-3xl p-6 md:p-10 max-w-7xl mx-auto shadow-2xl">
+            {activeTab === "ingame" ? (
+              <div className="animate-fade-in-up">
+                <div className="flex items-center gap-4 mb-10 pb-6 border-b border-white/5">
+                  <Shield className="text-red-500" size={40} />
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">
+                      JKC:RP In-Game Regulations
+                    </h3>
+                    <p className="text-slate-500 text-sm mt-1">
+                      Berlaku untuk semua warga kota tanpa terkecuali.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {inGameRules.map((rule, idx) => (
+                    <RuleItem
+                      key={idx}
+                      number={idx + 1}
+                      title={rule.title}
+                      desc={rule.desc}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="animate-fade-in-up">
+                <div className="flex items-center gap-4 mb-10 pb-6 border-b border-white/5">
+                  <DiscordIcon className="text-[#5865F2]" size={40} />
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">
+                      JKC:RP Discord Guidelines
+                    </h3>
+                    <p className="text-slate-500 text-sm mt-1">
+                      Etika berkomunikasi dalam komunitas kami.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {discordRules.map((rule, idx) => (
+                    <RuleItem
+                      key={idx}
+                      number={idx + 1}
+                      title={rule.title}
+                      desc={rule.desc}
+                    />
+                  ))}
+                </div>
+                <div className="mt-10 p-6 bg-red-900/10 border border-red-500/20 rounded-2xl flex gap-5 items-start">
+                  <AlertTriangle
+                    className="text-red-500 shrink-0 mt-1 animate-pulse"
+                    size={28}
+                  />
+                  <div>
+                    <h4 className="font-bold text-red-400 text-lg">
+                      Peringatan Keras
+                    </h4>
+                    <p className="text-slate-400 mt-2 leading-relaxed">
+                      Pelanggaran serius terhadap aturan ini dapat mengakibatkan{" "}
+                      <span className="text-white font-semibold">
+                        Permanent Ban
+                      </span>{" "}
+                      dari server Discord maupun akses In-Game. Kami tidak
+                      mentolerir toksisitas.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* --- NEW SECTION: FAQ (Simple Dark) --- */}
+      <section id="faq" className="py-24 bg-[#0a0505] relative">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row gap-16">
+            <div className="md:w-1/3">
+              <RevealOnScroll>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">
+                  <HelpCircle size={14} className="text-red-500" /> Pusat
+                  Bantuan
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                  Sering Ditanyakan
+                </h2>
+                <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                  Punya pertanyaan seputar JKC:RP? Cek jawaban dari pertanyaan
+                  yang paling sering diajukan oleh komunitas kami.
+                </p>
+                <Button
+                  variant="outline"
                   icon={DiscordIcon}
                   onClick={() => openLink(LINKS.discord)}
                 >
-                  Join Community
+                  Tanya di Discord
                 </Button>
-              </div>
+              </RevealOnScroll>
+            </div>
+            <div className="md:w-2/3">
+              <RevealOnScroll delay={200}>
+                <div className="space-y-2">
+                  {faqData.map((item, idx) => (
+                    <FaqItem key={idx} question={item.q} answer={item.a} />
+                  ))}
+                </div>
+              </RevealOnScroll>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. EKOSISTEM DIGITAL (Circuit/Network Gradient) */}
+      <section
+        id="ecosystem"
+        className="py-24 bg-gradient-to-b from-[#0a0f0d] to-black"
+      >
+        {/* Subtle Green/Emerald Tint for Economy */}
+        <div className="absolute inset-0 bg-emerald-900/5 z-0 pointer-events-none mix-blend-screen" />
+        <div className="container mx-auto px-6 relative z-10">
+          <RevealOnScroll className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Ekosistem Digital Terintegrasi
+            </h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+              Satu akun untuk semua layanan. Dari Pemerintahan hingga Ekonomi,
+              semua terhubung secara <strong>Real-Time</strong>.
+            </p>
+          </RevealOnScroll>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <RevealOnScroll delay={100}>
+              <FeatureCard
+                title="JCN Network"
+                desc="Portal berita real-time. Baca berita terkini seputar kriminal, politik, dan event kota."
+                icon={Newspaper}
+                color="red"
+                link={LINKS.news}
+              />
+            </RevealOnScroll>
+            <RevealOnScroll delay={200}>
+              <FeatureCard
+                title="Kejaksaan Negeri"
+                desc="Sistem manajemen perkara pidana dan database kriminal terpadu."
+                icon={Gavel}
+                color="emerald"
+                link={LINKS.kejaksaan}
+                comingSoon={true}
+              />
+            </RevealOnScroll>
+            <RevealOnScroll delay={300}>
+              <FeatureCard
+                title="Pasar Saham JCI"
+                desc="Investasi saham dinamis. Pantau harga pasar dan jadilah konglomerat."
+                icon={TrendingUp}
+                color="amber"
+                link={LINKS.market}
+              />
+            </RevealOnScroll>
+            <RevealOnScroll delay={400}>
+              <FeatureCard
+                title="E-Tax Jakarta"
+                desc="Bayar pajak kendaraan dan properti Anda dengan mudah melalui sistem E-Tax."
+                icon={Landmark}
+                color="blue"
+                link={LINKS.pajak}
+              />
+            </RevealOnScroll>
+            <RevealOnScroll delay={500}>
+              <FeatureCard
+                title="KPK Center (BAK)"
+                desc="Layanan pengaduan masyarakat dan pelaporan LHKPN pejabat negara."
+                icon={Search}
+                color="indigo"
+                link={LINKS.bak}
+              />
+            </RevealOnScroll>
+            <RevealOnScroll delay={600}>
+              <FeatureCard
+                title="Citra AI Assistant"
+                desc="Bot pintar yang siap menjawab pertanyaan Anda seputar hukum dan kota 24/7."
+                icon={Activity}
+                color="purple"
+                link={LINKS.discordcitra}
+              />
             </RevealOnScroll>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      {/* FOOTER */}
-      <footer className="bg-black border-t border-slate-800 pt-24 pb-12">
+      {/* --- NEW SECTION: CALL TO ACTION --- */}
+      <section className="py-20 relative overflow-hidden">
+        {/* Animated Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-red-900/20 via-black to-blue-900/20 animate-gradient-flow bg-[length:200%_200%] z-0"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] z-0"></div>
+
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <RevealOnScroll>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Siap Memulai Cerita Anda?
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-10">
+              Bergabunglah dengan ribuan warga Jakarta City lainnya. Ciptakan
+              karir, tegakkan hukum, atau jadilah penguasa ekonomi kota.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button
+                variant="white"
+                icon={Play}
+                onClick={() => openLink(LINKS.play)}
+              >
+                Mainkan Sekarang
+              </Button>
+              <Button
+                variant="primary"
+                icon={DiscordIcon}
+                onClick={() => openLink(LINKS.discord)}
+              >
+                Join Community
+              </Button>
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* 5. FOOTER */}
+      <footer className="bg-black border-t border-slate-900 pt-24 pb-12">
         <div className="container mx-auto px-6">
           <RevealOnScroll className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-8">
                 <img
                   src="/JKCRP-BT.png"
-                  alt="Logo JKC:RP"
+                  alt="JKC Logo"
                   className="w-12 h-12 object-contain transition-transform group-hover:scale-110 group-hover:rotate-3"
                   onError={(e) => {
                     e.target.onerror = null;
@@ -1336,7 +1336,7 @@ export default function JKCLandingPage() {
                   JKC<span className="text-red-600">:RP</span>
                 </span>
               </div>
-              <p className="text-slate-300 mb-8 max-w-md leading-relaxed">
+              <p className="text-slate-400 mb-8 max-w-md leading-relaxed">
                 Komunitas Roleplay Indonesia terbesar di platform Roblox ER:LC.
                 Kami menggabungkan teknologi web canggih dengan gameplay
                 imersif.
@@ -1344,66 +1344,58 @@ export default function JKCLandingPage() {
               <div className="flex gap-4">
                 <button
                   onClick={() => openLink(LINKS.youtube)}
-                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-500 hover:-translate-y-1 transition-all duration-300 group"
+                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-500 hover:-translate-y-1 transition-all duration-300 group"
                   title="YouTube"
-                  aria-label="YouTube"
                 >
                   <Youtube
                     size={20}
                     className="group-hover:scale-110 transition-transform"
-                    aria-hidden="true"
                   />
                 </button>
                 <button
                   onClick={() => openLink(LINKS.tiktok)}
-                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white hover:border-slate-500 hover:-translate-y-1 transition-all duration-300 group"
+                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white hover:border-slate-500 hover:-translate-y-1 transition-all duration-300 group"
                   title="TikTok"
-                  aria-label="TikTok"
                 >
                   <TiktokIcon
                     size={20}
                     className="group-hover:scale-110 transition-transform"
-                    aria-hidden="true"
                   />
                 </button>
                 <button
                   onClick={() => openLink(LINKS.discord)}
-                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-[#5865F2] hover:text-white hover:border-[#5865F2] hover:-translate-y-1 transition-all duration-300 group"
+                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#5865F2] hover:text-white hover:border-[#5865F2] hover:-translate-y-1 transition-all duration-300 group"
                   title="Discord"
-                  aria-label="Discord"
                 >
                   <DiscordIcon
                     size={20}
                     className="group-hover:scale-110 transition-transform"
-                    aria-hidden="true"
                   />
                 </button>
                 <button
                   onClick={() => openLink(LINKS.donation)}
-                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-500 hover:-translate-y-1 transition-all duration-300 group"
+                  className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-500 hover:-translate-y-1 transition-all duration-300 group"
                   title="Donasi"
-                  aria-label="Donasi"
                 >
                   <Heart
                     size={20}
                     className="group-hover:scale-110 transition-transform"
-                    aria-hidden="true"
                   />
                 </button>
               </div>
             </div>
 
             <div>
-              <h3 className="text-white font-bold mb-8 border-l-4 border-red-600 pl-4 text-lg">
+              <h4 className="text-white font-bold mb-8 border-l-4 border-red-600 pl-4 text-lg">
                 Navigasi
-              </h3>
-              <ul className="space-y-4 text-slate-300">
+              </h4>
+              <ul className="space-y-4 text-slate-400">
                 <li>
                   <a
                     href={LINKS.news}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     Portal Berita
                   </a>
@@ -1418,7 +1410,7 @@ export default function JKCLandingPage() {
                     href={LINKS.market}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     Marketplace
                   </a>
@@ -1427,16 +1419,16 @@ export default function JKCLandingPage() {
             </div>
 
             <div>
-              <h3 className="text-white font-bold mb-8 border-l-4 border-red-600 pl-4 text-lg">
+              <h4 className="text-white font-bold mb-8 border-l-4 border-red-600 pl-4 text-lg">
                 Komunitas
-              </h3>
-              <ul className="space-y-4 text-slate-300">
+              </h4>
+              <ul className="space-y-4 text-slate-400">
                 <li>
                   <a
                     href={LINKS.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     YouTube Channel
                   </a>
@@ -1446,7 +1438,7 @@ export default function JKCLandingPage() {
                     href={LINKS.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     TikTok Official
                   </a>
@@ -1456,7 +1448,7 @@ export default function JKCLandingPage() {
                     href={LINKS.vote}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     Vote Server (Melonly)
                   </a>
@@ -1466,7 +1458,7 @@ export default function JKCLandingPage() {
                     href={LINKS.discord}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 hover:pl-2 transition-all block"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
                   >
                     Discord Server
                   </a>
@@ -1475,7 +1467,7 @@ export default function JKCLandingPage() {
             </div>
           </RevealOnScroll>
 
-          <div className="border-t border-slate-800 pt-10 text-center text-slate-500 text-sm">
+          <div className="border-t border-slate-900 pt-10 text-center text-slate-600 text-sm">
             <p className="mb-2">
               © 2025 Jakarta City Roleplay. Dibuat dengan semangat merah putih.
             </p>
@@ -1486,7 +1478,63 @@ export default function JKCLandingPage() {
         </div>
       </footer>
 
-      {/* ...existing code... */}
+      {/* GLOBAL CSS ANIMATIONS */}
+      <style>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translate3d(0, 40px, 0); }
+          to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translate3d(0, -40px, 0); }
+          to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        @keyframes kenBurns {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.1); }
+        }
+        @keyframes pulseSlow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        @keyframes gridMove {
+          0% { background-position: 0 0; }
+          100% { background-position: 50px 50px; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes gradientFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        
+        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+        .animate-fade-in-down { animation: fadeInDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+        .animate-ken-burns { animation: kenBurns 20s ease-out infinite alternate; }
+        .animate-pulse-slow { animation: pulseSlow 8s ease-in-out infinite; }
+        .animate-grid-move { animation: gridMove 8s linear infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-gradient-flow { background-size: 200% 200%; animation: gradientFlow 10s ease infinite; }
+        .animate-blob { animation: blob 10s infinite; }
+        
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+        .delay-600 { animation-delay: 600ms; }
+      `}</style>
     </div>
   );
 }
