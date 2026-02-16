@@ -98,7 +98,7 @@ const LINKS = {
   kepolisian: "https://discord.gg/WFze64KXQd",
   pemadamkebakaran: "https://discord.gg/WFze64KXQd",
   DOT: "https://discord.gg/WFze64KXQd",
-  staff: "https://discord.gg/hHR2h7Q2qf"
+  staff: "https://discord.gg/hHR2h7Q2qf",
 };
 
 // --- DATA DEPARTEMEN ---
@@ -119,7 +119,7 @@ const departments = [
     icon: Flame,
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
-    link: LINKS.pemadamkebakaran, 
+    link: LINKS.pemadamkebakaran,
   },
   {
     id: "jcdot",
@@ -128,7 +128,7 @@ const departments = [
     icon: Truck,
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
-    link: LINKS.DOT, 
+    link: LINKS.DOT,
   },
   {
     id: "jckj",
@@ -296,7 +296,8 @@ const DepartmentCard = ({ dept }) => {
     blue: "bg-blue-600 hover:bg-blue-700 text-white border-blue-500",
     red: "bg-red-600 hover:bg-red-700 text-white border-red-500",
     amber: "bg-amber-600 hover:bg-amber-700 text-white border-amber-500",
-    emerald: "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500",
+    emerald:
+      "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500",
     purple: "bg-purple-600 hover:bg-purple-700 text-white border-purple-500",
     rose: "bg-rose-600 hover:bg-rose-700 text-white border-rose-500",
   }[dept.color];
@@ -320,10 +321,10 @@ const DepartmentCard = ({ dept }) => {
       </div>
       <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">{dept.desc}</p>
-      
+
       {/* Button */}
       {dept.comingSoon ? (
-        <button 
+        <button
           disabled
           className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-500 cursor-not-allowed bg-slate-800 px-4 py-2.5 rounded-lg border border-slate-700 transition-all"
         >
@@ -337,13 +338,15 @@ const DepartmentCard = ({ dept }) => {
           className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
         >
           Bergabung bersama Kami
-          <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
+          <ExternalLink
+            size={14}
+            className="group-hover:translate-x-1 transition-transform"
+          />
         </a>
       )}
     </div>
   );
 };
-
 
 const StatItem = ({ label, value, icon: Icon, color }) => (
   <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
@@ -599,7 +602,7 @@ export default function JKCLandingPage() {
     >
       {/* 1. NAVBAR */}
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-lg border-b border-white/5 py-3 shadow-lg" : "bg-transparent py-6"}`}
+        className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-lg py-3 shadow-lg" : "bg-transparent py-6"}`}
       >
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div
@@ -893,7 +896,7 @@ export default function JKCLandingPage() {
                   <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
                     <span className="text-slate-400">Base Game</span>
                     <span className="text-white font-semibold font-mono tracking-wide">
-                      ER: LIBERTY COUNTY
+                      Emergency Response: Liberty County
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-sm pb-2">
@@ -967,14 +970,22 @@ export default function JKCLandingPage() {
         <div className="container mx-auto px-6 relative z-10">
           <RevealOnScroll className="max-w-4xl mx-auto text-center mb-12">
             {/* BADGE FIX: Menggunakan flex & gap untuk menyejajarkan icon */}
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-900/50 border border-slate-700/50 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-slate-950 border border-white/10 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-2xl">
               <span className="flex items-center gap-1.5 text-red-500">
-                <Calendar size={13} strokeWidth={2.5} className="shrink-0" />
-                <span>EST.</span>
+                {/* Perhatikan: Tambahan -translate-y-[0.5px] untuk menyeimbangkan visual */}
+                <Calendar
+                  size={13}
+                  strokeWidth={2.5}
+                  className="shrink-0 -translate-y-[0.5px]"
+                />
+                <span className="leading-none">EST.</span>
               </span>
-              <span className="w-[1px] h-3 bg-slate-700" />{" "}
-              {/* Separator vertikal halus */}
-              <span className="text-slate-200">22 November 2023</span>
+
+              <span className="w-[1px] h-3 bg-white/10" />
+
+              <span className="text-slate-200 leading-none">
+                22 November 2023
+              </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">
@@ -985,17 +996,16 @@ export default function JKCLandingPage() {
               {/* Animated Top Border */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent group-hover:via-red-400 transition-all duration-500" />
 
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-8">
-                <strong className="text-white">Jakarta City Roleplay</strong>{" "}
-                adalah Server bertema Kota Jakarta dari Indonesia. JKC:RP
-                merupakan{" "}
-                <span className="text-white font-bold border-b-2 border-red-600/50 pb-1">
-                  server Indonesia pertama di ER:LC
+              <p className="text-slate-300 text-lg leading-relaxed mb-6">
+                <strong>Jakarta City Roleplay</strong> adalah Server bertema
+                Kota Jakarta dari Indonesia. JKC:RP merupakan{" "}
+                <span className="text-white font-bold border-b border-red-500/50 pb-0.5">
+                  Server Indonesia pertama di ER:LC
                 </span>{" "}
                 yang memelopori penggunaan sistem{" "}
-                <strong className="text-red-400">Economy Modern</strong>,
-                mencakup integrasi <strong>Sistem Pajak</strong> dan{" "}
-                <strong>Composite Index</strong> yang real-time.
+                <strong>Economy Modern</strong>, mencakup integrasi{" "}
+                <strong>Sistem Pajak</strong> dan{" "}
+                <strong>Composite Index (Pasar Saham)</strong> yang real-time.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
@@ -1012,7 +1022,7 @@ export default function JKCLandingPage() {
                     In-Game Code
                   </span>
                   <span className="text-red-500 font-mono text-2xl font-black tracking-[0.15em] animate-pulse">
-                    JKCRP
+                    jkcrp
                   </span>
                 </div>
               </div>
@@ -1480,6 +1490,39 @@ export default function JKCLandingPage() {
 
       {/* GLOBAL CSS ANIMATIONS */}
       <style>{`
+        /* Custom Scrollbar dengan tema JKC:RP */
+        ::-webkit-scrollbar {
+          width: 12px;
+          height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #0a0505;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+          border-radius: 6px;
+          border: 2px solid #0a0505;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+        }
+        ::-webkit-scrollbar-corner {
+          background: #0a0505;
+        }
+
+        /* Firefox Scrollbar */
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: #dc2626 #0a0505;
+        }
+
+        /* Hapus horizontal scrollbar */
+        html, body {
+          overflow-x: hidden;
+          max-width: 100vw;
+        }
+
         @keyframes fadeInUp {
           from { opacity: 0; transform: translate3d(0, 40px, 0); }
           to { opacity: 1; transform: translate3d(0, 0, 0); }
