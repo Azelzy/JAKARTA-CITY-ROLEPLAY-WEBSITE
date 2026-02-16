@@ -1,11 +1,13 @@
+/* eslint-disable no-empty */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Shield, Globe, TrendingUp, Gavel, 
-  Users, Server, ChevronRight, Play, 
+  Shield, TrendingUp, Gavel, 
+  Server, Play, 
   Monitor, Activity,
-  Newspaper, Landmark, ArrowRight, CheckCircle, ExternalLink,
-  Menu, X, AlertTriangle, BookOpen, AlertCircle,
-  ThumbsUp, Star, Heart, Coffee, Lock, Youtube, Calendar,
+  Newspaper, Landmark, ArrowRight, ExternalLink,
+  Menu, X, AlertTriangle, BookOpen,
+  ThumbsUp, Star, Heart, Lock, Youtube, Calendar,
   Siren, Flame, Truck, Crown, Search, HelpCircle, ChevronDown, Camera
 } from 'lucide-react';
 
@@ -65,10 +67,11 @@ const RevealOnScroll = ({ children, className = "", delay = 0 }) => {
       },
       { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) observer.observe(currentRef);
     return () => { 
-      if (ref.current) {
-        try { observer.unobserve(ref.current); } catch(e) {}
+      if (currentRef) {
+        try { observer.unobserve(currentRef); } catch(e) {}
       } 
     };
   }, []);
@@ -97,7 +100,6 @@ const Button = ({ children, variant = 'primary', className = '', icon: Icon, onC
       <span className="relative z-10 flex items-center gap-2">
         {children} {Icon && <Icon size={18} />}
       </span>
-      {/* Button Shine Effect */}
       <div className="absolute inset-0 h-full w-full scale-0 rounded-lg transition-all duration-300 group-hover:scale-100 group-hover:bg-white/10"></div>
     </button>
   );
@@ -164,8 +166,8 @@ const DepartmentCard = ({ dept }) => {
       <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
       <p className="text-slate-400 text-sm leading-relaxed">{dept.desc}</p>
     </div>
-  )
-}
+  );
+};
 
 const StatItem = ({ label, value, icon: Icon, color }) => (
   <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
@@ -230,7 +232,6 @@ export default function JKCLandingPage() {
 
   const openLink = (url) => window.open(url, '_blank');
 
-  // --- FUNGSI SCROLL ---
   const scrollToSection = (e, id) => {
     e.preventDefault(); 
     e.stopPropagation(); 
@@ -280,10 +281,10 @@ export default function JKCLandingPage() {
   ];
 
   const galleryImages = [
-    "/Screenshot_2025-09-08_162255.png", // City
-    "/Screenshot_2025-09-07_120538.png", // Police
-    "/Screenshot_2025-09-08_145048.png", // Medic
-    "/Screenshot_2025-09-08_143909.png", // Night life
+    "/Screenshot_2025-09-08_162255.png",
+    "/Screenshot_2025-09-07_120538.png",
+    "/Screenshot_2025-09-08_145048.png",
+    "/Screenshot_2025-09-08_143909.png",
   ];
 
   const faqData = [
@@ -310,7 +311,6 @@ export default function JKCLandingPage() {
             <span className="text-xl font-bold text-white tracking-tight drop-shadow-md">JKC<span className="text-red-500">:RP</span></span>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             {['History', 'Depts', 'Gallery', 'Rules', 'Ecosystem'].map((item) => (
               <button 
@@ -331,7 +331,6 @@ export default function JKCLandingPage() {
           </button>
         </div>
         
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-md border-b border-red-900/30 p-6 flex flex-col gap-4 shadow-2xl animate-slide-down">
             <button className="text-left text-slate-300 hover:text-red-400 py-2 bg-transparent border-none" onClick={(e) => scrollToSection(e, 'history')}>Sejarah</button>
@@ -347,13 +346,8 @@ export default function JKCLandingPage() {
       {/* 2. HERO SECTION */}
       <header className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050505]">
         
-        {/* === DYNAMIC BACKGROUND LAYERS === */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
-           
-           {/* Layer 0: Base Gradient */}
            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-[#0a0505] to-black z-0" />
-
-           {/* Layer 1: Image + Ken Burns + Filters */}
            <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0">
              <img 
               src="https://images.unsplash.com/photo-1555899434-94d1368b7bdb?q=80&w=2070&auto=format&fit=crop" 
@@ -361,8 +355,6 @@ export default function JKCLandingPage() {
               className="w-full h-full object-cover animate-ken-burns filter contrast-125 brightness-75 grayscale-[30%]"
             />
            </div>
-           
-           {/* Layer 2: Moving Tech Grid Overlay (Perspective) */}
            <div className="absolute inset-0 opacity-20 z-10 animate-grid-move" 
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)', 
@@ -371,17 +363,11 @@ export default function JKCLandingPage() {
                   transform: 'perspective(500px) rotateX(20deg) scale(1.5)'
                 }}>
            </div>
-
-           {/* Layer 3: Noise Texture */}
            <div className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none mix-blend-overlay" 
              style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} 
            />
-
-           {/* Layer 4: Cinematic Gradients */}
            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/80 z-20" />
            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-20" />
-           
-           {/* Layer 5: Ambient Glows (Animated Blobs) */}
            <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-red-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob z-10" />
            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-2000 z-10" />
            <div className="absolute top-[40%] left-[20%] w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[80px] mix-blend-screen animate-blob animation-delay-4000 z-10" />
@@ -416,7 +402,7 @@ export default function JKCLandingPage() {
         </div>
       </header>
 
-      {/* 2.5. ABOUT / PLATFORM SECTION (Background Gradient) */}
+      {/* 2.5. ABOUT SECTION */}
       <section id="features" className="py-24 bg-gradient-to-b from-[#050505] to-black relative overflow-hidden">
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[100px] -z-10 animate-blob" />
          <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
@@ -473,9 +459,8 @@ export default function JKCLandingPage() {
          </div>
       </section>
 
-      {/* --- NEW SECTION: GALLERY / SNEAK PEEK (Pure Black w/ Noise) --- */}
+      {/* GALLERY SECTION */}
       <section id="gallery" className="py-24 bg-[#020202] relative border-t border-white/5">
-         {/* Noise Overlay */}
          <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
         <div className="container mx-auto px-6 relative z-10">
           <RevealOnScroll className="text-center mb-16">
@@ -505,9 +490,8 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* 2.8 HISTORY SECTION (Spotlight Effect) */}
+      {/* HISTORY SECTION */}
       <section id="history" className="py-24 bg-[#080404] relative border-y border-white/5 overflow-hidden">
-         {/* Warm Radial Glow */}
          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-900/10 via-[#0a0505] to-black z-0" />
          
          <div className="container mx-auto px-6 relative z-10">
@@ -540,7 +524,7 @@ export default function JKCLandingPage() {
          </div>
       </section>
 
-      {/* 2.9 DEPARTMENTS SECTION (Blue Tech Grid) */}
+      {/* DEPARTMENTS SECTION */}
       <section id="depts" className="py-24 bg-[#040608] relative border-b border-white/5">
         <div className="absolute inset-0 opacity-10 z-0 pointer-events-none" 
              style={{ 
@@ -567,7 +551,7 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* 3. RULES SECTION (Subtle Diagonal Lines) */}
+      {/* RULES SECTION */}
       <section id="rules" className="py-24 bg-[#080404] relative border-b border-white/5">
         <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none" 
              style={{ 
@@ -624,7 +608,7 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* --- NEW SECTION: FAQ (Simple Dark) --- */}
+      {/* FAQ SECTION */}
       <section id="faq" className="py-24 bg-[#0a0505] relative">
         <div className="container mx-auto px-6">
            <div className="flex flex-col md:flex-row gap-16">
@@ -653,9 +637,8 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* 4. EKOSISTEM DIGITAL (Circuit/Network Gradient) */}
+      {/* ECOSYSTEM SECTION */}
       <section id="ecosystem" className="py-24 bg-gradient-to-b from-[#0a0f0d] to-black">
-         {/* Subtle Green/Emerald Tint for Economy */}
          <div className="absolute inset-0 bg-emerald-900/5 z-0 pointer-events-none mix-blend-screen" />
         <div className="container mx-auto px-6 relative z-10">
           <RevealOnScroll className="text-center mb-16">
@@ -676,9 +659,8 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* --- NEW SECTION: CALL TO ACTION --- */}
+      {/* CALL TO ACTION SECTION */}
       <section className="py-20 relative overflow-hidden">
-        {/* Animated Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-red-900/20 via-black to-blue-900/20 animate-gradient-flow bg-[length:200%_200%] z-0"></div>
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] z-0"></div>
         
@@ -696,7 +678,7 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* 5. FOOTER */}
+      {/* FOOTER */}
       <footer className="bg-black border-t border-slate-900 pt-24 pb-12">
         <div className="container mx-auto px-6">
           <RevealOnScroll className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
@@ -763,10 +745,6 @@ export default function JKCLandingPage() {
           0% { transform: scale(1); }
           100% { transform: scale(1.1); }
         }
-        @keyframes pulseSlow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.05); }
-        }
         @keyframes gridMove {
           0% { background-position: 0 0; }
           100% { background-position: 50px 50px; }
@@ -790,7 +768,6 @@ export default function JKCLandingPage() {
         .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
         .animate-fade-in-down { animation: fadeInDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
         .animate-ken-burns { animation: kenBurns 20s ease-out infinite alternate; }
-        .animate-pulse-slow { animation: pulseSlow 8s ease-in-out infinite; }
         .animate-grid-move { animation: gridMove 8s linear infinite; }
         .animate-float { animation: float 6s ease-in-out infinite; }
         .animate-gradient-flow { background-size: 200% 200%; animation: gradientFlow 10s ease infinite; }
