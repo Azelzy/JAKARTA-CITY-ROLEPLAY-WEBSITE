@@ -111,6 +111,7 @@ const departments = [
     desc: "Menegakkan hukum, melindungi warga, dan menjaga ketertiban kota dari tindak kriminal.",
     color: "blue",
     link: LINKS.kepolisian,
+    image: "/bannerpolisi.png",
   },
   {
     id: "jcfd",
@@ -120,6 +121,7 @@ const departments = [
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
     link: LINKS.pemadamkebakaran,
+    image: "/bannerpemadam.png",
   },
   {
     id: "jcdot",
@@ -129,6 +131,7 @@ const departments = [
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
     link: LINKS.DOT,
+    image: "/bannerdot.png",
   },
   {
     id: "jckj",
@@ -139,6 +142,7 @@ const departments = [
     color: "emerald",
     link: LINKS.kejaksaan,
     comingSoon: true,
+    image: null,
   },
   {
     id: "jcbak",
@@ -149,6 +153,7 @@ const departments = [
     color: "rose",
     link: LINKS.bak,
     comingSoon: true,
+    image: null,
   },
   {
     id: "jcst",
@@ -158,6 +163,7 @@ const departments = [
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
     link: LINKS.staff,
+    image: null,
   },
 ];
 
@@ -277,7 +283,7 @@ const FeatureCard = ({ title, desc, icon: Icon, color, link, comingSoon }) => {
     </div>
   );
 };
-// --- KOMPONEN DEPARTEMEN ---
+// --- KOMPONEN DEPARTMEN ---
 const DepartmentCard = ({ dept }) => {
   const colorStyles = {
     blue: "border-blue-500/30 bg-blue-500/5 text-blue-400 group-hover:bg-blue-500/10",
@@ -291,7 +297,6 @@ const DepartmentCard = ({ dept }) => {
     rose: "border-rose-500/30 bg-rose-500/5 text-rose-400 group-hover:bg-rose-500/10",
   }[dept.color];
 
-  // Styling untuk button
   const buttonColorStyles = {
     blue: "bg-blue-600 hover:bg-blue-700 text-white border-blue-500",
     red: "bg-red-600 hover:bg-red-700 text-white border-red-500",
@@ -304,46 +309,70 @@ const DepartmentCard = ({ dept }) => {
 
   return (
     <div
-      className={`group relative p-6 rounded-2xl border ${colorStyles} bg-slate-900/30 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl`}
+      className={`group relative overflow-hidden rounded-2xl border ${colorStyles} bg-slate-900/30 backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col`}
     >
-      <div className="flex items-center gap-4 mb-3">
-        <div
-          className={`p-3 rounded-lg bg-black/40 border border-white/5 transition-transform duration-500 group-hover:rotate-6`}
-        >
-          <dept.icon size={28} />
-        </div>
-        <div>
-          <h4 className="text-2xl font-black tracking-tighter">{dept.abbr}</h4>
-          <p className="text-[10px] uppercase tracking-widest opacity-70">
-            Official Dept.
-          </p>
-        </div>
-      </div>
-      <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">{dept.desc}</p>
-
-      {/* Button */}
-      {dept.comingSoon ? (
-        <button
-          disabled
-          className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-500 cursor-not-allowed bg-slate-800 px-4 py-2.5 rounded-lg border border-slate-700 transition-all"
-        >
-          Segera Hadir <Lock size={12} className="ml-2" />
-        </button>
-      ) : (
-        <a
-          href={dept.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
-        >
-          Bergabung bersama Kami
-          <ExternalLink
-            size={14}
-            className="group-hover:translate-x-1 transition-transform"
+      {/* Banner Image */}
+      {dept.image ? (
+        <div className="relative w-full h-40 overflow-hidden bg-black/40 border-b border-white/5">
+          <img
+            src={dept.image}
+            alt={dept.abbr}
+            className="w-full h-full object-cover filter brightness-75 group-hover:brightness-100 transition-all duration-500 group-hover:scale-110"
           />
-        </a>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
+        </div>
+      ) : (
+        <div className="relative w-full h-40 bg-gradient-to-br from-slate-800 to-black border-b border-white/5 flex items-center justify-center">
+          <div className="text-center">
+            <dept.icon size={48} className="mx-auto opacity-30 mb-2" />
+            <p className="text-xs text-slate-600 font-semibold">COMING SOON</p>
+          </div>
+        </div>
       )}
+
+      {/* Content */}
+      <div className="p-6 flex-1 flex flex-col">
+        <div className="flex items-center gap-4 mb-3">
+          <div
+            className={`p-3 rounded-lg bg-black/40 border border-white/5 transition-transform duration-500 group-hover:rotate-6`}
+          >
+            <dept.icon size={28} />
+          </div>
+          <div>
+            <h4 className="text-2xl font-black tracking-tighter">{dept.abbr}</h4>
+            <p className="text-[10px] uppercase tracking-widest opacity-70">
+              Official Dept.
+            </p>
+          </div>
+        </div>
+        <h5 className="text-white font-bold mb-2 text-lg">{dept.name}</h5>
+        <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+          {dept.desc}
+        </p>
+
+        {/* Button */}
+        {dept.comingSoon ? (
+          <button
+            disabled
+            className="w-full inline-flex items-center justify-center text-sm font-semibold text-slate-500 cursor-not-allowed bg-slate-800 px-4 py-2.5 rounded-lg border border-slate-700 transition-all"
+          >
+            Segera Hadir <Lock size={12} className="ml-2" />
+          </button>
+        ) : (
+          <a
+            href={dept.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border transition-all duration-300 hover:shadow-lg hover:scale-105 ${buttonColorStyles}`}
+          >
+            Bergabung bersama Kami
+            <ExternalLink
+              size={14}
+              className="group-hover:translate-x-1 transition-transform"
+            />
+          </a>
+        )}
+      </div>
     </div>
   );
 };
