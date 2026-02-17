@@ -416,7 +416,7 @@ const StatItem = ({ label, value, icon: Icon, color }) => (
     >
       <Icon size={20} className="md:w-6 md:h-6" />
     </div>
-    
+
     {/* text-left ditambahkan untuk memastikan perataan teks */}
     <div className="min-w-0 text-left">
       <p className="text-lg md:text-2xl font-bold text-white font-mono truncate">
@@ -480,11 +480,22 @@ export default function JKCLandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("ingame");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
   }, []);
 
   const openLink = (url) => window.open(url, "_blank");
@@ -986,7 +997,6 @@ export default function JKCLandingPage() {
         id="gallery"
         className="py-24 bg-[#020202] relative border-t border-white/5"
       >
-        {/* Noise Overlay */}
         <div
           className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none"
           style={{
@@ -1009,7 +1019,8 @@ export default function JKCLandingPage() {
             {galleryImages.map((src, i) => (
               <div
                 key={i}
-                className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-white/5"
+                className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-red-500/50 transition-all"
+                onClick={() => setSelectedImage(src)}
               >
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
                 <img
@@ -1026,6 +1037,48 @@ export default function JKCLandingPage() {
             ))}
           </RevealOnScroll>
         </div>
+
+        {/* MODAL IMAGE PREVIEW */}
+        {selectedImage && (
+          <div
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[999] flex items-center justify-center p-4 animate-fade-in-up"
+            onClick={() => setSelectedImage(null)}
+          >
+            {/* Close Button - Improved Design */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-6 right-6 z-50 group"
+              title="Tutup (ESC)"
+            >
+              <div className="relative">
+                {/* Background glow effect */}
+                <div className="absolute inset-0 bg-white/10 rounded-full blur-md group-hover:bg-red-500/30 transition-all duration-300" />
+                
+                {/* Main button */}
+                <div className="relative w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-red-500 group-hover:border-red-500 transition-all duration-300 group-hover:rotate-90 group-hover:scale-110">
+                  <X size={20} className="text-white" strokeWidth={2.5} />
+                </div>
+              </div>
+            </button>
+
+            <div
+              className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Image Container */}
+              <img
+                src={selectedImage}
+                alt="Full Preview"
+                className="w-full h-full object-contain rounded-2xl shadow-2xl"
+              />
+
+              {/* Info Text */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/60 text-sm bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+                Tekan ESC atau klik di luar gambar untuk menutup
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* 2.8 HISTORY SECTION (Spotlight Effect) */}
