@@ -645,6 +645,8 @@ export default function JKCLandingPage() {
     },
   ];
 
+  // --- DATA GALERI ---
+
   const galleryImages = [
     "/webp/Screenshot_2025-09-08_162255.webp", // City
     "/webp/Screenshot_2025-09-07_120538.webp", // Police
@@ -1029,8 +1031,10 @@ export default function JKCLandingPage() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                  <div className="bg-black/50 backdrop-blur-md p-3 rounded-full border border-white/20">
-                    <Camera className="text-white" size={24} />
+                  <div className="bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/20">
+                    <p className="text-white font-medium text-sm whitespace-nowrap">
+                      Klik disini untuk full preview
+                    </p>
                   </div>
                 </div>
               </div>
