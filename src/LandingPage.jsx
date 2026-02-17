@@ -166,6 +166,7 @@ const departments = [
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
     link: LINKS.staff,
+    image: "/webp/bannerstaff1.webp",
     logo: "/webp/LOGO_STAFF.webp",
   },
 ];
@@ -344,7 +345,7 @@ const DepartmentCard = ({ dept }) => {
               <img
                 src={dept.logo}
                 alt={dept.abbr}
-                className="w-full h-full object-contain" // Padding p-2 dihapus agar logo bisa lebih besar
+                className="w-full h-full object-contain"  // Padding p-2 dihapus agar logo bisa lebih besar
                 onError={(e) => {
                   e.target.style.display = "none";
                   if (e.target.nextSibling)
@@ -1091,7 +1092,8 @@ export default function JKCLandingPage() {
         </div>
       </section>
 
-      {/* 2.9 DEPARTMENTS SECTION (Blue Tech Grid) */}
+      {/* 2.9 DEPARTMENTS SECTION */}
+
       <section
         id="depts"
         className="py-24 bg-[#040608] relative border-b border-white/5"
