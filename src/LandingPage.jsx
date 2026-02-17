@@ -111,8 +111,8 @@ const departments = [
     desc: "Menegakkan hukum, melindungi warga, dan menjaga ketertiban kota dari tindak kriminal.",
     color: "blue",
     link: LINKS.kepolisian,
-    image: "/bannerpolisi.png",
-    logo: "/logoJKC/LOGO_KEPOLISIAN.png",
+    image: "/webp/bannerpolisi.webp",
+    logo: "/webp/LOGO_KEPOLISIAN.webp",
   },
   {
     id: "jcfd",
@@ -122,8 +122,8 @@ const departments = [
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
     link: LINKS.pemadamkebakaran,
-    image: "/bannerpemadam.png",
-    logo: "/logoJKC/LOGO_PEMADAM.png",
+    image: "/webp/bannerpemadam.webp",
+    logo: "webp/LOGO_PEMADAM.webp",
   },
   {
     id: "jcdot",
@@ -133,8 +133,8 @@ const departments = [
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
     link: LINKS.DOT,
-    image: "/bannerdot.png",
-    logo: "/logoJKC/LOGO_DOT.png",
+    image: "/webp/bannerDOT.webp",
+    logo: "/webp/LOGO_DOT.webp",
   },
   {
     id: "jckj",
@@ -145,7 +145,7 @@ const departments = [
     color: "emerald",
     link: LINKS.kejaksaan,
     comingSoon: true,
-    logo: "/logoJKC/LOGO_KEJAGUNG.png",
+    logo: "/webp/LOGO_KEJAGUNG.webp",
   },
   {
     id: "jcbak",
@@ -156,7 +156,7 @@ const departments = [
     color: "rose",
     link: LINKS.bak,
     comingSoon: true,
-    logo: "/logoJKC/LOGO_BAK.png",
+    logo: "/webp/LOGO_BAK.webp",
   },
   {
     id: "jcst",
@@ -166,7 +166,7 @@ const departments = [
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
     link: LINKS.staff,
-    logo: "/logoJKC/LOGO_STAFF.png",
+    logo: "/webp/LOGO_STAFF.webp",
   },
 ];
 
@@ -626,10 +626,10 @@ export default function JKCLandingPage() {
   ];
 
   const galleryImages = [
-    "/Screenshot_2025-09-08_162255.png", // City
-    "/Screenshot_2025-09-07_120538.png", // Police
-    "/Screenshot_2025-09-08_145048.png", // Medic
-    "/Screenshot_2025-09-08_143909.png", // Night life
+    "/webp/Screenshot_2025-09-08_162255.webp", // City
+    "/webp/Screenshot_2025-09-07_120538.webp", // Police
+    "/webp/Screenshot_2025-09-08_145048.webp", // Medic
+    "/webp/Screenshot_2025-09-08_143909.webp", // Night life
   ];
 
   const faqData = [
