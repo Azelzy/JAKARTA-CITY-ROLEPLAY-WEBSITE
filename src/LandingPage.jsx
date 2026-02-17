@@ -345,7 +345,7 @@ const DepartmentCard = ({ dept }) => {
               <img
                 src={dept.logo}
                 alt={dept.abbr}
-                className="w-full h-full object-contain"  // Padding p-2 dihapus agar logo bisa lebih besar
+                className="w-full h-full object-contain" // Padding p-2 dihapus agar logo bisa lebih besar
                 onError={(e) => {
                   e.target.style.display = "none";
                   if (e.target.nextSibling)
@@ -410,13 +410,21 @@ const DepartmentCard = ({ dept }) => {
 };
 
 const StatItem = ({ label, value, icon: Icon, color }) => (
-  <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
-    <div className={`p-3 rounded-lg bg-white/5 text-${color}-400`}>
-      <Icon size={24} />
+  <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4 bg-black/40 backdrop-blur-md p-3 md:p-4 rounded-xl border border-white/10 hover:border-red-500/50 transition-all shadow-lg animate-float hover:scale-105 duration-300">
+    <div
+      className={`p-2 md:p-3 rounded-lg bg-white/5 text-${color}-400 shrink-0`}
+    >
+      <Icon size={20} className="md:w-6 md:h-6" />
     </div>
-    <div>
-      <p className="text-2xl font-bold text-white font-mono">{value}</p>
-      <p className="text-xs text-slate-400 uppercase tracking-wider">{label}</p>
+    
+    {/* text-left ditambahkan untuk memastikan perataan teks */}
+    <div className="min-w-0 text-left">
+      <p className="text-lg md:text-2xl font-bold text-white font-mono truncate">
+        {value}
+      </p>
+      <p className="text-xs md:text-xs text-slate-400 uppercase tracking-wider truncate">
+        {label}
+      </p>
     </div>
   </div>
 );
@@ -897,7 +905,7 @@ export default function JKCLandingPage() {
                 </span>
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed">
-                JKC:RP dibangun di atas platform{" "}
+                JKC:RP dibangun di atas platform
                 <strong>Emergency Response: Liberty County</strong>. Kami
                 menghadirkan tekstur seragam Polisi, Pemadam, Medis, dan
                 kendaraan khas Indonesia yang autentik, dipadukan dengan
@@ -956,7 +964,7 @@ export default function JKCLandingPage() {
                   </div>
                   <div className="flex justify-between items-center text-sm border-b border-white/5 pb-4">
                     <span className="text-slate-400">Base Game</span>
-                    <span className="text-white font-semibold font-mono tracking-wide">
+                    <span className="text-white font-semibold font-mono tracking-wide text-right text-xs md:text-sm break-words">
                       Emergency Response: Liberty County
                     </span>
                   </div>
