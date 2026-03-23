@@ -90,11 +90,13 @@ const LINKS = {
   play: "https://www.roblox.com/games/start?launchData=%7B%22psCode%22%3A%22jkcrp%22%7D&placeId=2534724415",
   youtube: "https://www.youtube.com/@JakartaCityRoleplay",
   tiktok: "https://www.tiktok.com/@jkc.roleplay.erlc",
-  news: "https://newsjakartacityroleplay.netlify.app/",
-  market: "https://jakartacitycompositeindex.netlify.app/",
-  pajak: "https://pajakjakartacityroleplay.netlify.app/",
-  bak: "https://bakjakartacityroleplay.netlify.app/",
-  kejaksaan: "#",
+  news: "https://news.jakartacityroleplay.my.id/",
+  market: "https://jci.jakartacityroleplay.my.id/",
+  pajak: "https://pajak.jakartacityroleplay.my.id/",
+  webbak: "https://bak.jakartacityroleplay.my.id/",
+  webkejaksaan: "https://kejaksaan.jakartacityroleplay.my.id/",
+  kejaksaan: "https://discord.gg/WFze64KXQd",
+  bak: "https://discord.gg/WFze64KXQd",
   kepolisian: "https://discord.gg/WFze64KXQd",
   pemadamkebakaran: "https://discord.gg/WFze64KXQd",
   DOT: "https://discord.gg/WFze64KXQd",
@@ -111,8 +113,10 @@ const departments = [
     desc: "Menegakkan hukum, melindungi warga, dan menjaga ketertiban kota dari tindak kriminal.",
     color: "blue",
     link: LINKS.kepolisian,
-    image: "/webp/bannerpolisi.webp",
-    logo: "/webp/LOGO_KEPOLISIAN.webp",
+    // image: "/bannerpolisi.webp",
+    // image: "/bannerpolisi1.webp",
+    image: "bannernonblur/bannerpolisinologo.png",
+    logo: "/LOGO_KEPOLISIAN.webp",
   },
   {
     id: "jcfd",
@@ -122,8 +126,10 @@ const departments = [
     desc: "Unit reaksi cepat penanggulangan kebakaran dan layanan medis darurat (EMS).",
     color: "red",
     link: LINKS.pemadamkebakaran,
-    image: "/webp/bannerpemadam.webp",
-    logo: "webp/LOGO_PEMADAM.webp",
+    // image: "/bannerpemadam.webp",
+    // image: "/bannerpemadam1.webp",
+    image: "bannernonblur/bannerpemadamnologo.png",
+    logo: "/LOGO_PEMADAM.webp",
   },
   {
     id: "jcdot",
@@ -133,8 +139,10 @@ const departments = [
     desc: "Mengatur lalu lintas, layanan derek, dan pemeliharaan infrastruktur jalan.",
     color: "amber",
     link: LINKS.DOT,
-    image: "/webp/bannerDOT.webp",
-    logo: "/webp/LOGO_DOT.webp",
+    // image: "/bannerDOT.webp",
+    // image: "/bannerdot1.webp",
+    image: "bannernonblur/bannerdotnologo.png",
+    logo: "/LOGO_DOT.webp",
   },
   {
     id: "jckj",
@@ -144,8 +152,9 @@ const departments = [
     desc: "Lembaga penuntut umum yang memastikan keadilan hukum ditegakkan di pengadilan.",
     color: "emerald",
     link: LINKS.kejaksaan,
-    comingSoon: true,
-    logo: "/webp/LOGO_KEJAGUNG.webp",
+    logo: "/LOGO_KEJAGUNG.webp",
+    // image: "/bannerJCKJ.webp",
+    image: "bannernonblur/bannerJCKJnonlogo.png",
   },
   {
     id: "jcbak",
@@ -155,8 +164,9 @@ const departments = [
     desc: "Lembaga independen pemberantas tindak pidana korupsi di lingkungan pemerintahan.",
     color: "rose",
     link: LINKS.bak,
-    comingSoon: true,
-    logo: "/webp/LOGO_BAK.webp",
+    logo: "/LOGO_BAK.webp",
+    // image: "/bannerBAK.webp",
+      image: "bannernonblur/bannerBAKnonlogo.png",
   },
   {
     id: "jcst",
@@ -166,8 +176,10 @@ const departments = [
     desc: "Tim administrasi dan manajemen yang memastikan server berjalan kondusif.",
     color: "purple",
     link: LINKS.staff,
-    image: "/webp/bannerstaff1.webp",
-    logo: "/webp/LOGO_STAFF.webp",
+    // image: "/bannerstaff1.webp",
+    // image: "/bannerstaf1.webp",
+    image: "bannernonblur/bannerstaffteamnologo.png",
+    logo: "/LOGO_STAFF.webp",
   },
 ];
 
@@ -648,10 +660,10 @@ export default function JKCLandingPage() {
   // --- DATA GALERI ---
 
   const galleryImages = [
-    "/webp/Screenshot_2025-09-08_162255.webp", // City
-    "/webp/Screenshot_2025-09-07_120538.webp", // Police
-    "/webp/Screenshot_2025-09-08_145048.webp", // Medic
-    "/webp/Screenshot_2025-09-08_143909.webp", // Night life
+    "/Screenshot_2025-09-08_162255.webp", // City
+    "/Screenshot_2025-09-07_120538.webp", // Police
+    "/Screenshot_2025-09-08_145048.webp", // Medic
+    "/Screenshot_2025-09-08_143909.webp", // Night life
   ];
 
   const faqData = [
@@ -692,8 +704,8 @@ export default function JKCLandingPage() {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img
-              src="/JKCRP-BT.png"
-              alt="JKC Logo"
+              src="/JKCRP-BT.webp"
+              alt="Logo Resmi Jakarta City Roleplay"
               className="w-12 h-12 object-contain transition-transform group-hover:scale-110 group-hover:rotate-3"
               onError={(e) => {
                 e.target.onerror = null;
@@ -799,7 +811,7 @@ export default function JKCLandingPage() {
           <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0">
             <img
               // src="https://images.unsplash.com/photo-1555899434-94d1368b7bdb?q=80&w=2070&auto=format&fit=crop"
-              alt="Monas Jakarta Background"
+              alt="Monas Jakarta City Roleplay Background"
               className="w-full h-full object-cover animate-ken-burns filter contrast-125 brightness-75 grayscale-[30%]"
             />
           </div>
@@ -1375,8 +1387,7 @@ export default function JKCLandingPage() {
                 desc="Sistem manajemen perkara pidana dan database kriminal terpadu."
                 icon={Gavel}
                 color="emerald"
-                link={LINKS.kejaksaan}
-                comingSoon={true}
+                link={LINKS.webkejaksaan}
               />
             </RevealOnScroll>
             <RevealOnScroll delay={300}>
@@ -1403,7 +1414,7 @@ export default function JKCLandingPage() {
                 desc="Layanan pengaduan masyarakat dan pelaporan LHKPN pejabat negara."
                 icon={Search}
                 color="indigo"
-                link={LINKS.bak}
+                link={LINKS.webbak}
               />
             </RevealOnScroll>
             <RevealOnScroll delay={600}>
@@ -1461,8 +1472,8 @@ export default function JKCLandingPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-8">
                 <img
-                  src="/JKCRP-BT.png"
-                  alt="JKC Logo"
+                  src="/JKCRP-BT.webp"
+                  alt="Logo Resmi Jakarta City Roleplay"
                   className="w-12 h-12 object-contain transition-transform group-hover:scale-110 group-hover:rotate-3"
                   onError={(e) => {
                     e.target.onerror = null;
@@ -1538,9 +1549,14 @@ export default function JKCLandingPage() {
                   </a>
                 </li>
                 <li>
-                  <span className="text-slate-600 cursor-not-allowed block">
-                    Kejaksaan (Segera)
-                  </span>
+                  <a
+                    href={LINKS.webkejaksaan}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-red-500 hover:pl-2 transition-all block"
+                  >
+                    Kejaksaan
+                  </a>
                 </li>
                 <li>
                   <a
@@ -1606,7 +1622,7 @@ export default function JKCLandingPage() {
 
           <div className="border-t border-slate-900 pt-10 text-center text-slate-600 text-sm">
             <p className="mb-2">
-              © 2025 Jakarta City Roleplay. Dibuat dengan semangat merah putih.
+              © Jakarta City Roleplay. Dibuat dengan semangat merah putih.
             </p>
             <p className="text-xs opacity-50">
               Not affiliated with Roblox Corporation.
